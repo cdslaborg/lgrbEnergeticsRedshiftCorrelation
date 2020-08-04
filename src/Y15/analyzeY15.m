@@ -15,4 +15,3 @@ cd(fileparts(mfilename('fullpath'))); % Change working directory to source code 
 % generate Y15 object
 
 y15 = AnalysisY15(true,0.0);
-

@@ -33,6 +33,7 @@ minAlpha.tau = tauValues(alphaValues==0);
 
 fontSize = 13; 
 
+%{
 figure; hold on; box on;
     plot( alphaValues ...
         , tauValues ...
@@ -60,5 +61,4 @@ figure; hold on; box on;
     export_fig("../out/Y15/Y15taualpha(sameH0dm).png", "-m2 -transparent")
     
 hold off;
-
-
+%}
