@@ -5,22 +5,28 @@ filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
 addpath(genpath("../../../libmatlab"),"-begin");
+addpath(genpath("../"),"-begin");
 
 fontSize = 13;
 figureColor = "white";
 
 global alpha
 alpha = 0.0;
-threshLim = 2.e-8;
+%threshLim = 2.e-8;
 
-d = importdata("../in/Y15table1.xlsx"); % getLogLumDisWicMPC.m
+d = importdata("../../in/P16tableB1.xlsx");
 
 dsorted = sortrows(d.data,2);
 zone = dsorted(:,2)+1;
 liso = dsorted(:,4);
 
-%for ithresh=log10(1.e-8):.2:log10(1.e-5)
-    %threshLim = 10^ithresh;
+ithreshList = log10(1.e-8):.1:log10(1.e-5);
+ithreshLen = length(ithreshList);
+tauAlphaZero = zeros(ithreshLen,1);
+alphaTauZero = zeros(ithreshLen,1);
+j = 1;
+for ithresh=ithreshList
+    threshLim = 10^ithresh;
 
     logZone = log(zone);
     logLiso = log(liso);
@@ -31,6 +37,7 @@ liso = dsorted(:,4);
                         , @getLogThreshLim ... getThreshLim
                         );
 
+%{
     figure; hold on; box on;
     zoneLim = [0.8, 12]; % 2200];
 
@@ -88,10 +95,16 @@ liso = dsorted(:,4);
         export_fig("../out/Y15/Y15zoneLiso.png", "-m2 -transparent")
 
     hold off
+%}
+    epstat = getEfronStat( logZone ... xvec
+                         , logLiso ... yvec
+                         , logZoneMax ... getLim
+                         );
     epstat.tau
 
     LOG_THRESH_LIM = log(threshLim);
     verticalDistanceFromThreshLine = logLiso - getLogThreshLim(logZone,threshLim) + LOG_THRESH_LIM;
+%{
     figure; hold on; box on;
         h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.5);
         line([LOG_THRESH_LIM/log(10), LOG_THRESH_LIM/log(10)], [0, 50],'color','black','linewidth',2,'linestyle','--')
@@ -114,10 +127,33 @@ liso = dsorted(:,4);
         set(gca,'color',figureColor, 'fontSize', fontSize)
         export_fig("../out/Y15/Y15zoneSbol.png", "-m2 -transparent")
     hold off;
-
+%}
 
     % generate alpha-tau curve
-    plotZoneEisoDependency
+    plotZoneEisoDependency_2
+    tauAlphaZero(j) = minAlpha.tau;
+    %alphaTauZero(j,1) = minTau.value;
+    alphaTauZero(j) = minTau.alpha;
+    j = j + 1;
 
-%end
+end
 
+figure; hold on; box on;
+    plot(10.^ithreshList,tauAlphaZero,'.-','linewidth',2,'color','black','markersize',20);
+    xlabel("Threshold Limit [ erg s^{-1} cm^{-2} ]", "interpreter", "tex", "fontSize", fontSize);
+    ylabel("Tau at Alpha = 0", "fontSize", fontSize);
+    set(gca, 'xscale', 'log');
+    set(gcf, 'color', figureColor);
+    set(gca,'color',figureColor, 'fontSize', fontSize)
+    export_fig("../../out/P16/P16tauAlphaZero.png", "-m2 -transparent");
+hold off;
+
+figure; hold on; box on;
+    plot(10.^ithreshList,alphaTauZero,'.-','linewidth',2,'color','black','markersize',20);
+    xlabel("Threshold Limit [ erg s^{-1} cm^{-2} ]", "interpreter", "tex", "fontSize", fontSize);
+    ylabel("Alpha near Tau = 0", "fontSize", fontSize);
+    set(gca, 'xscale', 'log');
+    set(gcf, 'color', figureColor);
+    set(gca,'color',figureColor, 'fontSize', fontSize)
+    export_fig("../../out/P16/P16alphaTauZero.png", "-m2 -transparent");
+hold off;

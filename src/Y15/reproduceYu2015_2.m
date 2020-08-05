@@ -1,5 +1,5 @@
 clear all;
-%close all;
+close all;
 format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
@@ -13,7 +13,7 @@ global alpha
 alpha = 0.0;
 %threshLim = 2.e-8;
 
-d = importdata("../in/Y15table1.xlsx"); % getLogLumDisWicMPC.m
+d = importdata("../in/Y15table1.xlsx");
 
 dsorted = sortrows(d.data,2);
 zone = dsorted(:,2)+1;
