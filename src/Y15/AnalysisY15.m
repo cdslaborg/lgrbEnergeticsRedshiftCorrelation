@@ -5,6 +5,7 @@ classdef AnalysisY15 < BaseAnalysis
         file
         data
         logdata
+        epstat
     end
 
     methods(Access=public)
@@ -44,7 +45,7 @@ classdef AnalysisY15 < BaseAnalysis
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        function getTau(logThresh)
+        function tau = getTau(alpha)
             
         end
 
