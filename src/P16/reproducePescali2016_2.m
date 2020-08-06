@@ -4,7 +4,7 @@ format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("../../../libmatlab"),"-begin");
+addpath(genpath("../../../../libmatlab"),"-begin");
 addpath(genpath("../"),"-begin");
 
 fontSize = 13;
@@ -12,7 +12,6 @@ figureColor = "white";
 
 global alpha
 alpha = 0.0;
-%threshLim = 2.e-8;
 
 d = importdata("../../in/P16tableB1.xlsx");
 

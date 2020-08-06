@@ -12,14 +12,13 @@ figureColor = "white";
 
 global alpha
 alpha = 0.0;
-%threshLim = 2.6*(150-15)*1.60218e-9;
-threshLim = 1.e-7;   % for alpha=2.5
+threshLim = 2.e-6;
 
-d = importdata("../../in/P16tableB1.xlsx");
+d = importdata("../../in/T17table4_2.txt",' ',47);
 
-dsorted = sortrows(d.data,2);
-zone = dsorted(:,2)+1;
-liso = dsorted(:,4);
+dsorted = sortrows(d.data,1);
+zone = dsorted(:,1)+1;
+liso = dsorted(:,20)*1.e+51;
 
 logZone = log(zone);
 logLiso = log(liso);
@@ -31,7 +30,7 @@ logZoneMax = getXmax( logZone ... xvec
                     );
 
 figure; hold on; box on;
-zoneLim = [0.8, 8]; % 2200];
+zoneLim = [1, 6]; % 2200];
 
     plot(zone,liso,'.','markersize',20)
 
@@ -46,11 +45,12 @@ zoneLim = [0.8, 8]; % 2200];
         );
 
     xlim(zoneLim);
-    ylim([1.e48, 5.e55]);
+    ylim([1.e50, 5.e55]);
     xlabel("z + 1", "fontSize", fontSize)
     ylabel("L_{iso} [ ergs / s ]", "fontSize", fontSize)
     set(gca,'yscale','log');
-    legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    set(gca,'xscale','log');
+    legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
 
     epstat = getEfronStat   ( logZone ... xvec
                             , logLiso ... yvec
@@ -84,7 +84,7 @@ zoneLim = [0.8, 8]; % 2200];
     
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/P16/P16zoneLiso.png", "-m2 -transparent")
+    export_fig("../../out/T17/T17zoneLiso.png", "-m2 -transparent")
 
 hold off
 epstat.tau
@@ -99,7 +99,7 @@ figure; hold on; box on;
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/P16/P16histSbol.png", "-m2 -transparent")
+    export_fig("../../out/T17/T17histSbol.png", "-m2 -transparent")
 hold off;
 
 figure; hold on; box on;
@@ -111,7 +111,7 @@ figure; hold on; box on;
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/P16/P16zoneSbol.png", "-m2 -transparent")
+    export_fig("../../out/T17/T17zoneSbol.png", "-m2 -transparent")
 hold off;
 
 
@@ -132,6 +132,6 @@ figure; hold on; box on;
     xlabel("z + 1", "fontSize", fontSize)
     ylabel("L_{0} [ ergs / s ]", "fontSize", fontSize)
     set(gca,'yscale','log');
-    legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
 hold off;
 %}
