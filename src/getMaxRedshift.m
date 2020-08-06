@@ -1,4 +1,4 @@
-function xmax = getXmax(xvec,yvec,threshLim,getThreshLim)
+function xmax = getMaxRedshift(xvec,yvec,threshLim,getThreshLim)
     ndata = length(xvec);
     if ndata~=length(yvec)
         error("ndata~=length(y): " + string(xvec) + " " + string(yvec) );

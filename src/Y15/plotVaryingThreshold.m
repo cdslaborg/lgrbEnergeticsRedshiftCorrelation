@@ -5,6 +5,7 @@ filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
 addpath(genpath("../../../../libmatlab"),"-begin");
+addpath(genpath("../"),"-begin");
 
 fontSize = 13;
 figureColor = "white";
@@ -24,13 +25,13 @@ ithreshLen = length(ithreshList);
 tauAlphaZero = zeros(ithreshLen,1);
 alphaTauZero = zeros(ithreshLen,1);
 j = 1;
-for ithresh=ithreshList
+for ithresh = ithreshList
     threshLim = 10^ithresh;
 
     logZone = log(zone);
     logLiso = log(liso);
     ndata = length(logZone);
-    logZoneMax = getXmax( logZone ... xvec
+    logZoneMax = getMaxRedshift( logZone ... xvec
                         , logLiso ... yvec
                         , threshLim ...
                         , @getLogThreshLim ... getThreshLim

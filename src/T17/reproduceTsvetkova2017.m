@@ -23,7 +23,7 @@ liso = dsorted(:,20)*1.e+51;
 logZone = log(zone);
 logLiso = log(liso);
 ndata = length(logZone);
-logZoneMax = getXmax( logZone ... xvec
+logZoneMax = getMaxRedshift( logZone ... xvec
                     , logLiso ... yvec
                     , threshLim ...
                     , @getLogThreshLim ... getThreshLim

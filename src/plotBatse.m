@@ -82,7 +82,7 @@ hold off;
 % compute tau-alpha plot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-logRefinedZoneMax = getXmax ( logDataX ... xvec
+logRefinedZoneMax = getMaxRedshift ( logDataX ... xvec
                             , logDataY ... yvec
                             , @getLogThreshLim ... getThreshLim
                             );

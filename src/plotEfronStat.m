@@ -1,5 +1,5 @@
 function plotEfronStat(xvec,yvec,getThreshLim)
-    xmax = getXmax  ( xvec ... xvec
+    xmax = getMaxRedshift  ( xvec ... xvec
                     , yvec ... yvec
                     , getThreshLim ... getThreshLim
                     );

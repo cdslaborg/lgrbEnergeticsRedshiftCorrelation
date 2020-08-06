@@ -7,7 +7,7 @@ refinedLiso = liso(threshMask);
 logRefinedZone = log(zone);
 logRefinedLiso = log(liso);
 
-logRefinedZoneMax = getXmax ( logRefinedZone ... xvec
+logRefinedZoneMax = getMaxRedshift ( logRefinedZone ... xvec
                             , logRefinedLiso ... yvec
                             , threshLim ...
                             , @getLogThreshLim ... getThreshLim

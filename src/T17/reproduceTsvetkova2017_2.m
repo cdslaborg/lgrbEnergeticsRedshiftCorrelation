@@ -30,7 +30,7 @@ for ithresh=ithreshList
     logZone = log(zone);
     logLiso = log(liso);
     ndata = length(logZone);
-    logZoneMax = getXmax( logZone ... xvec
+    logZoneMax = getMaxRedshift( logZone ... xvec
                         , logLiso ... yvec
                         , threshLim ...
                         , @getLogThreshLim ... getThreshLim

@@ -1,4 +1,5 @@
 function epstat = getEfronStat(xvec,yvec,xmax)
+
     ndata = length(xvec);
     if ndata~=length(yvec)
         error("ndata~=length(y): " + string(xvec) + " " + string(yvec) );
