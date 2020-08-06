@@ -18,10 +18,6 @@ classdef AnalysisY15 < BaseAnalysis
 
             self = self@BaseAnalysis(fluenceThreshEnabled,observerLogThresh);
 
-            % add matlab library paths
-
-            addpath(genpath("../../../../libmatlab/"),"-begin")
-
             % set up the IO paths for this analysis
 
             self.path = struct();
@@ -45,7 +41,11 @@ classdef AnalysisY15 < BaseAnalysis
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+<<<<<<< HEAD:src/Y15/AnalysisY15.m
         function tau = getTau(alpha)
+=======
+        function tau = getTau(logThresh)
+>>>>>>> 47a61934264fb783c93699e9cb13d258ad8571b0:src/Y15/OOP/AnalysisY15.m
             
         end
 
