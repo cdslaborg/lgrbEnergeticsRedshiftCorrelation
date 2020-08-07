@@ -13,7 +13,7 @@ figureColor = "white";
 global alpha
 alpha = 0.0;
 %threshLim = 2.6*(150-15)*1.60218e-9;
-threshLim = 1.e-7;   % for alpha=2.5
+threshLim = 2.e-7;   % for alpha=2.5
 
 d = importdata("../../in/P16tableB1.xlsx");
 

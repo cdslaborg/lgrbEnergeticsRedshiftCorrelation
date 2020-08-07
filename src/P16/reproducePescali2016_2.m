@@ -148,7 +148,7 @@ figure; hold on; box on;
 hold off;
 
 figure; hold on; box on;
-    plot(10.^ithreshList,alphaTauZero,'.-','linewidth',2,'color','black','markersize',20);
+    plot(10.^ithreshList,alphaTauZero,'-','linewidth',2,'color','black','markersize',20);
     xlabel("Threshold Limit [ erg s^{-1} cm^{-2} ]", "interpreter", "tex", "fontSize", fontSize);
     ylabel("Alpha near Tau = 0", "fontSize", fontSize);
     set(gca, 'xscale', 'log');

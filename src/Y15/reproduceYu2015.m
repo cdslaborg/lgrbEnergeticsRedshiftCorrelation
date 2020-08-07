@@ -4,7 +4,8 @@ format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("../../../libmatlab"),"-begin");
+addpath(genpath("../../../../libmatlab"),"-begin");
+addpath(genpath("../"),"-begin");
 
 fontSize = 13;
 figureColor = "white";
@@ -116,10 +117,15 @@ hold off;
 % generate alpha-tau curve
 plotZoneEisoDependency
 
+logLiso = log(liso);
+logLisoCorrected = logLiso - minTau.alpha * logZone;
+
 figure; hold on; box on;
-    plot(zone,liso/zone.^minTau.alpha,'.','markersize',20);
+    plot(zone,exp(logLisoCorrected),'.','markersize',20);
     zoneGrid = 1.001:0.001:zoneLim(2);
-    threshGrid = exp( getLogThreshLim(log(zoneGrid),threshLim) );
+    logZoneGrid = log(zoneGrid);
+    logThreshGridCorrected = getLogThreshLim(logZoneGrid,threshLim) - minTau.alpha * logZoneGrid;
+    threshGrid = exp( logThreshGridCorrected );
     plot( zoneGrid ...
         , threshGrid ...
         , "linewidth", 2 ...
