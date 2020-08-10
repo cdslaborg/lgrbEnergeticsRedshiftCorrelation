@@ -23,6 +23,7 @@ ithreshList = log10(1.e-8):.1:log10(1.e-5);
 ithreshLen = length(ithreshList);
 tauAlphaZero = zeros(ithreshLen,1);
 alphaTauZero = zeros(ithreshLen,1);
+alphaTauZeroValue = zeros(ithreshLen,1);
 j = 1;
 for ithresh=ithreshList
     threshLim = 10^ithresh;
@@ -131,8 +132,8 @@ for ithresh=ithreshList
     % generate alpha-tau curve
     plotZoneEisoDependency_2
     tauAlphaZero(j) = minAlpha.tau;
-    %alphaTauZero(j,1) = minTau.value;
     alphaTauZero(j) = minTau.alpha;
+    alphaTauZeroValue(j) = minTau.value;
     j = j + 1;
 
 end
@@ -148,7 +149,11 @@ figure; hold on; box on;
 hold off;
 
 figure; hold on; box on;
+    colormap('winter');
     plot(10.^ithreshList,alphaTauZero,'-','linewidth',2,'color','black','markersize',20);
+    scatter(10.^ithreshList,alphaTauZero,800,abs(alphaTauZeroValue),'.');
+    cb = colorbar();
+    cb.Label.String = 'Tau Value';
     xlabel("Threshold Limit [ erg s^{-1} cm^{-2} ]", "interpreter", "tex", "fontSize", fontSize);
     ylabel("Alpha near Tau = 0", "fontSize", fontSize);
     set(gca, 'xscale', 'log');

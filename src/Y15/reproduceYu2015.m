@@ -46,7 +46,7 @@ zoneLim = [0.8, 12]; % 2200];
 
     xlim(zoneLim);
     ylim([1.e48, 5.e55]);
-    xlabel("Z + 1", "fontSize", fontSize)
+    xlabel("z + 1", "fontSize", fontSize)
     ylabel("L_{iso} [ ergs / s ]", "fontSize", fontSize)
     set(gca,'yscale','log');
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
@@ -83,7 +83,7 @@ zoneLim = [0.8, 12]; % 2200];
     
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15zoneLiso.png", "-m2 -transparent")
+    export_fig("../../out/Y15/Y15zoneLiso.png", "-m4 -transparent")
 
 hold off
 epstat.tau
@@ -105,7 +105,7 @@ figure; hold on; box on;
     plot(exp(logZone),exp(verticalDistanceFromThreshLine),'.-','markersize',10); set(gca,'xscale','log','yscale','linear');
     line([zoneLim(1), zoneLim(2)],[threshLim, threshLim],'color','black','linewidth',2,'linestyle','--')
     legend(["Y15 sample", "Y15 detection limit"], "fontSize", fontSize,'color',figureColor)
-    xlabel("Z + 1", "interpreter", "tex", "fontSize", fontSize)
+    xlabel("z + 1", "interpreter", "tex", "fontSize", fontSize)
     ylabel("Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)

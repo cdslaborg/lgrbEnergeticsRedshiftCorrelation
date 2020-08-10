@@ -13,16 +13,17 @@ global alpha
 alpha = 0.0;
 %threshLim = 2.e-8;
 
-d = importdata("../../in/Y15table1.xlsx");
+d = importdata("../../in/T17table4_2.txt",' ',47);
 
-dsorted = sortrows(d.data,2);
-zone = dsorted(:,2)+1;
-liso = dsorted(:,4);
+dsorted = sortrows(d.data,1);
+zone = dsorted(:,1)+1;
+liso = dsorted(:,20)*1.e+51;
 
 ithreshList = log10(1.e-8):.1:log10(1.e-5);
 ithreshLen = length(ithreshList);
 tauAlphaZero = zeros(ithreshLen,1);
 alphaTauZero = zeros(ithreshLen,1);
+alphaTauZeroValue = zeros(ithreshLen,1);
 j = 1;
 for ithresh=ithreshList
     threshLim = 10^ithresh;
@@ -131,8 +132,8 @@ for ithresh=ithreshList
     % generate alpha-tau curve
     plotZoneEisoDependency_2
     tauAlphaZero(j) = minAlpha.tau;
-    %alphaTauZero(j,1) = minTau.value;
     alphaTauZero(j) = minTau.alpha;
+    alphaTauZeroValue(j) = minTau.value;
     j = j + 1;
 
 end
@@ -144,15 +145,19 @@ figure; hold on; box on;
     set(gca, 'xscale', 'log');
     set(gcf, 'color', figureColor);
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15tauAlphaZero.png", "-m2 -transparent");
+    export_fig("../../out/T17/T17tauAlphaZero.png", "-m2 -transparent");
 hold off;
 
 figure; hold on; box on;
-    plot(10.^ithreshList,alphaTauZero,'.-','linewidth',2,'color','black','markersize',20);
+    colormap('winter');
+    plot(10.^ithreshList,alphaTauZero,'-','linewidth',2,'color','black','markersize',20);
+    scatter(10.^ithreshList,alphaTauZero,800,abs(alphaTauZeroValue),'.');
+    cb = colorbar();
+    cb.Label.String = 'Tau Value';
     xlabel("Threshold Limit [ erg s^{-1} cm^{-2} ]", "interpreter", "tex", "fontSize", fontSize);
     ylabel("Alpha near Tau = 0", "fontSize", fontSize);
     set(gca, 'xscale', 'log');
     set(gcf, 'color', figureColor);
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15alphaTauZero.png", "-m2 -transparent");
+    export_fig("../../out/T17/T17alphaTauZero.png", "-m2 -transparent");
 hold off;
