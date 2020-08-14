@@ -4,8 +4,8 @@ format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("../../../../libmatlab"),"-begin");
-addpath(genpath("../"),"-begin");
+addpath(genpath("../../../../../libmatlab"),"-begin");
+addpath(genpath("../../chris"),"-begin");
 
 fontSize = 13;
 figureColor = "white";
@@ -14,7 +14,7 @@ global alpha
 alpha = 0.0;
 threshLim = 2.e-8;
 
-d = importdata("../../in/Y15table1.xlsx");
+d = importdata("../../../in/Y15table1.xlsx");
 
 dsorted = sortrows(d.data,2);
 zone = dsorted(:,2)+1;
@@ -83,7 +83,7 @@ zoneLim = [0.8, 12]; % 2200];
     
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15zoneLiso.png", "-m4 -transparent")
+    export_fig("../../../out/Y15/Y15zoneLiso.png", "-m4 -transparent")
 
 hold off
 epstat.tau
@@ -98,7 +98,7 @@ figure; hold on; box on;
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15histSbol.png", "-m2 -transparent")
+    export_fig("../../../out/Y15/Y15histSbol.png", "-m2 -transparent")
 hold off;
 
 figure; hold on; box on;
@@ -110,7 +110,7 @@ figure; hold on; box on;
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/Y15/Y15zoneSbol.png", "-m2 -transparent")
+    export_fig("../../../out/Y15/Y15zoneSbol.png", "-m2 -transparent")
 hold off;
 
 
