@@ -52,6 +52,7 @@ if freshRunEnabled
 
 else
     
+    y15.output.path = "../../out/Y15/";
     load(y15.output.path+"y15.mat"); % loads y15 object
     
 end

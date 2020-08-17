@@ -32,8 +32,8 @@ logZoneMax = getMaxRedshift( logZone ... xvec
 figure; hold on; box on;
 zoneLim = [0.8, 12]; % 2200];
 
-    plot(zone,liso,'.','markersize',20)
-
+    plot(zone,liso,'.','markersize',10)
+    
     % threhshold
 
     zoneGrid = 1.001:0.001:zoneLim(2);
@@ -43,7 +43,14 @@ zoneLim = [0.8, 12]; % 2200];
         , "linewidth", 2 ...
         , 'color', 'black' ...
         );
-
+    line([zoneLim(1),zoneGrid(3860)],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
+    line([4.86,4.86],[2.9e+51,5.e55],'color','black','linewidth',1,'linestyle','--')
+    line([2.77,2.77],[4.378e50,5.e55],'color','red','linewidth',1,'linestyle','--')
+    line([zoneLim(1),2.77],[4.378e50,4.378e50],'color','red','linewidth',1,'linestyle','--')
+    scatter(2.77,2.9e51,[],'black')
+    text(3.65,1.e55,'N_{i}','fontsize',13);
+    text(1.6,1.e55,'M_{i}','color','red','fontsize',13);
+    annotation('textarrow',[.4,.28],[.4,.485],'String','point i','fontsize',12);
     xlim(zoneLim);
     ylim([1.e48, 5.e55]);
     xlabel("z + 1", "fontSize", fontSize)
@@ -94,7 +101,7 @@ figure; hold on; box on;
     h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.5);
     line([LOG_THRESH_LIM/log(10), LOG_THRESH_LIM/log(10)], [0, 50],'color','black','linewidth',2,'linestyle','--')
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "fontSize", fontSize-2,'color',figureColor)
-    xlabel("Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontSize", fontSize-2)
+    xlabel("log10( Fluence [ ergs / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize-2)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
