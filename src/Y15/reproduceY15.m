@@ -1,6 +1,6 @@
 %clc;
-%clear all;
-%close all;
+clear all;
+close all;
 %clear classes;
 %format compact; format long;
 filePath = mfilename('fullpath');
@@ -123,7 +123,7 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", 1 ...
         );
     xlim([1.05, 12]);
-    xlabel("Z + 1", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(y15.output.path + "zoneLiso.png", "-m4 -transparent")
@@ -151,8 +151,8 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", 1 ...
         );
     xlim([1.05, 12]);
-    xlabel("Z + 1", "interpreter", "tex", "fontsize", fontSize);
-    ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
+    ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(y15.output.path + "zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
