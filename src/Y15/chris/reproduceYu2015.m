@@ -55,7 +55,7 @@ zoneLim = [0.8, 12]; % 2200];
     ylim([1.e48, 5.e55]);
     xlabel("z + 1", "fontSize", fontSize)
     ylabel("L_{iso} [ ergs / s ]", "fontSize", fontSize)
-    set(gca,'yscale','log');
+    set(gca,'xscale','log','yscale','log');
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
 
     epstat = getEfronStat   ( logZone ... xvec
