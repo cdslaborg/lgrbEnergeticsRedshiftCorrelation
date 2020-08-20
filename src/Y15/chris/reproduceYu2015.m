@@ -45,17 +45,17 @@ zoneLim = [0.8, 12]; % 2200];
         );
     line([zoneLim(1),zoneGrid(3860)],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
     line([4.86,4.86],[2.9e+51,5.e55],'color','black','linewidth',1,'linestyle','--')
-    line([2.77,2.77],[4.378e50,5.e55],'color','red','linewidth',1,'linestyle','--')
-    line([zoneLim(1),2.77],[4.378e50,4.378e50],'color','red','linewidth',1,'linestyle','--')
-    scatter(2.77,2.9e51,[],'black')
-    text(3.65,1.e55,'N_{i}','fontsize',13);
-    text(1.6,1.e55,'M_{i}','color','red','fontsize',13);
+    %line([2.77,2.77],[4.378e50,5.e55],'color','red','linewidth',1,'linestyle','--')
+    %line([zoneLim(1),2.77],[4.378e50,4.378e50],'color','red','linewidth',1,'linestyle','--')
+    scatter(2.77,2.9e51,75,'black')
+    text(2.6,1.e55,'N_{i}','fontsize',13);
+    %text(1.6,1.e55,'M_{i}','color','red','fontsize',13);
     annotation('textarrow',[.4,.28],[.4,.485],'String','point i','fontsize',12);
     xlim(zoneLim);
     ylim([1.e48, 5.e55]);
     xlabel("z + 1", "fontSize", fontSize)
     ylabel("L_{iso} [ ergs / s ]", "fontSize", fontSize)
-    set(gca,'xscale','log','yscale','log');
+    set(gca,'yscale','log');
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
 
     epstat = getEfronStat   ( logZone ... xvec
@@ -126,7 +126,7 @@ plotZoneEisoDependency
 
 logLiso = log(liso);
 logLisoCorrected = logLiso - minTau.alpha * logZone;
-
+%{
 figure; hold on; box on;
     plot(zone,exp(logLisoCorrected),'.','markersize',20);
     zoneGrid = 1.001:0.001:zoneLim(2);
@@ -145,3 +145,4 @@ figure; hold on; box on;
     set(gca,'yscale','log');
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
 hold off;
+%}

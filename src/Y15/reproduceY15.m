@@ -59,8 +59,6 @@ else
 end
 
 % plot tau(alpha = 0) versus threshold
-% Chris: add a text to the vertical line in the plot denoting that this is
-% Yu's detection threshold, something like "Y15 Detection Threshold". Once done, remove this note.
 
 y15.tauAtAlphaZero = zeros(y15.thresh.logRangeLen,1);
 y15.alphaAtTauZero = zeros(y15.thresh.logRangeLen,1);
@@ -80,6 +78,9 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(y15.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    scatter(2e-8,-5.4,100,'black')
+    annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
+    annotation('textarrow',[.45,.4],[.255,.255],'String','\tau = -5.4','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -87,8 +88,6 @@ figure("color", figureColor); hold on; box on;
 hold off;
 
 % plot alpha (tau = 0) versus threshold
-% Chris: add a text to the vertical line in the plot denoting that this is
-% Yu's detection threshold, something like "Y15 Detection Threshold". Once done, remove this note.
 
 figure("color", figureColor); hold on; box on;
     plot( exp( y15.thresh.logRange ) ...
@@ -97,6 +96,9 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(y15.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    scatter(2e-8,2.15,100,'black')
+    annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
+    annotation('textarrow',[.45,.4],[.785,.785],'String','\alpha = 2.15','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -153,12 +155,14 @@ figure("color", figureColor); hold on; box on;
     plot( exp( y15.regression.logZone ) ...
         , exp( y15.regression.logLiso ) ...
         , "--" ...
-        , "color", "green" ...
-        , "linewidth", 2 * lineWidth ...
+        , "color", "red" ...
+        , "linewidth", 1.5 * lineWidth ...
         );
+    yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(y15.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
+    legend(["Y15 sample", "Y15 detection limit","Regression line","Upper data limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(y15.output.path + "zoneLiso.png", "-m4 -transparent")
 hold off;
@@ -183,6 +187,7 @@ figure("color", figureColor); hold on; box on;
     xlim(y15.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
+    legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(y15.output.path + "zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
