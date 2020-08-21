@@ -101,7 +101,7 @@ figure; hold on; box on;
     h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.5);
     line([LOG_THRESH_LIM/log(10), LOG_THRESH_LIM/log(10)], [0, 50],'color','black','linewidth',2,'linestyle','--')
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "fontSize", fontSize-2,'color',figureColor)
-    xlabel("log10( Fluence [ ergs / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize-2)
+    xlabel("log10( Flux [ ergs / s / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize-2)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
@@ -113,7 +113,7 @@ figure; hold on; box on;
     line([zoneLim(1), zoneLim(2)],[threshLim, threshLim],'color','black','linewidth',2,'linestyle','--')
     legend(["Y15 sample", "Y15 detection limit"], "fontSize", fontSize,'color',figureColor)
     xlabel("z + 1", "interpreter", "tex", "fontSize", fontSize)
-    ylabel("Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
+    ylabel("Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)

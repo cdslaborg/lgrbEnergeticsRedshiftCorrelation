@@ -96,9 +96,12 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(y15.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    scatter(2e-8,2.15,100,'black')
+    yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
+    scatter(2e-8, 2.15, 100, 'black');
+    scatter(2.214e-7, 0, 100, [1,0,1]);
     annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.4],[.785,.785],'String','\alpha = 2.15','fontsize',11);
+    annotation('textarrow',[.65,.6],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -155,20 +158,25 @@ figure("color", figureColor); hold on; box on;
     plot( exp( y15.regression.logZone ) ...
         , exp( y15.regression.logLiso ) ...
         , "--" ...
-        , "color", "red" ...
+        , "color", [1,0,1] ...
         , "linewidth", 1.5 * lineWidth ...
         );
-    yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    line([y15.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
+    line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
+    scatter(2.77,2.9e51,75,'black')
+    text(2,1.e55,'N_{i}','fontsize',13);
+    annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
+    %yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(y15.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["Y15 sample", "Y15 detection limit","Regression line","Upper data limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["Y15 sample", "Y15 detection limit","Regression line"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(y15.output.path + "zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
-% Now build the decorrelated data and plot the the redshift-corrected bivariate data for zone-liso
+% Now build the decorrelated data and plot the redshift-corrected bivariate data for zone-liso
 
 
 figure("color", figureColor); hold on; box on;
