@@ -84,7 +84,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(y15.output.path + "threshTau.png", "-m4 -transparent")
+    export_fig(y15.output.path + "/threshTau.png", "-m4 -transparent")
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -105,7 +105,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(y15.output.path + "threshAlpha.png", "-m4 -transparent")
+    export_fig(y15.output.path + "/threshAlpha.png", "-m4 -transparent")
 hold off;
 
 
@@ -172,7 +172,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["Y15 sample", "Y15 detection limit","Regression line"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(y15.output.path + "zoneLiso.png", "-m4 -transparent")
+    export_fig(y15.output.path + "/zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
@@ -197,6 +197,6 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(y15.output.path + "zoneLisoCorrected.png", "-m4 -transparent")
+    export_fig(y15.output.path + "/zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
 
