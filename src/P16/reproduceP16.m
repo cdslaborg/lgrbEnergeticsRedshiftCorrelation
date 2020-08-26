@@ -17,7 +17,10 @@ freshRunEnabled = false; % this must be set to true for first ever simulation. T
 if freshRunEnabled
 
     p16 = struct();
-    p16.thresh.val = 2.0924e-7;
+    p16.thresh.val = 1.e-07;
+    %p16.thresh.val = 2.0704e-07; % for Ep = 140
+    %p16.thresh.val = 2.2878e-07; % for Ep = 362
+    %p16.thresh.val = 2.3433e-07; % for Ep = 574
     p16.thresh.logVal = log(p16.thresh.val);
 
     p16.input.file.path = "../../in/P16tableB1.xlsx";
@@ -41,6 +44,7 @@ if freshRunEnabled
     p16.thresh.logRange = p16.thresh.logMin:0.2:p16.thresh.logMax;
     p16.thresh.logRangeLen = length(p16.thresh.logRange);
     p16.estatList = cell(p16.thresh.logRangeLen,1);
+    %return
     for i = 1:p16.thresh.logRangeLen
         p16.estatList{i} = EfronStat( p16.logZone ... logx
                                     , p16.logLiso ... logy
@@ -78,13 +82,13 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(p16.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    scatter(p16.thresh.val,-3.25,100,'black')
-    annotation('textarrow',[.5,.56],[.75,.75],'String','p16 detection threshold','fontsize',11);
-    annotation('textarrow',[.5,.56],[.397,.397],'String','\tau = -5.4','fontsize',11);
+    scatter(p16.thresh.val,-5,100,'black')
+    annotation('textarrow',[.45,.5],[.75,.75],'String','p16 detection threshold','fontsize',11);
+    annotation('textarrow',[.45,.5],[.3,.3],'String','\tau = -5.0','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(p16.output.path + "/threshTau.png", "-m4 -transparent")
+    export_fig(p16.output.path + "/P16threshTau.png", "-m4 -transparent")
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -96,16 +100,16 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(p16.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
-    scatter(2e-8, 2.15, 100, 'black');
-    scatter(2.214e-7, 0, 100, [1,0,1]);
-    annotation('textarrow',[.45,.4],[.85,.85],'String','p16 detection threshold','fontsize',11);
-    annotation('textarrow',[.45,.4],[.785,.785],'String','\alpha = 2.15','fontsize',11);
-    annotation('textarrow',[.65,.6],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
+    %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
+    scatter(p16.thresh.val, p16.estat.logxMax.alpha.tau.zero, 100, 'black');
+    %scatter(4.5e-7, 0, 100, [1,0,1]);
+    annotation('textarrow',[.59,.54],[.85,.85],'String','p16 detection threshold','fontsize',11);
+    annotation('textarrow',[.59,.54],[.728,.728],'String','\alpha = 2.53','fontsize',11);
+    %annotation('textarrow',[.7,.65],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(p16.output.path + "/threshAlpha.png", "-m4 -transparent")
+    export_fig(p16.output.path + "/P16threshAlpha.png", "-m4 -transparent")
 hold off;
 
 
@@ -161,18 +165,18 @@ figure("color", figureColor); hold on; box on;
         , "color", [1,0,1] ...
         , "linewidth", 1.5 * lineWidth ...
         );
-    line([p16.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
-    line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
-    scatter(2.77,2.9e51,75,'black')
-    text(2,1.e55,'N_{i}','fontsize',13);
-    annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
+    %line([p16.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
+    %line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
+    %scatter(2.77,2.9e51,75,'black')
+    %text(2,1.e55,'N_{i}','fontsize',13);
+    %annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
     %yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(p16.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["p16 sample", "p16 detection limit","Regression line"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(p16.output.path + "/zoneLiso.png", "-m4 -transparent")
+    export_fig(p16.output.path + "/P16zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
@@ -197,6 +201,9 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["p16 sample", "p16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(p16.output.path + "/zoneLisoCorrected.png", "-m4 -transparent")
+    export_fig(p16.output.path + "/P16zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
 
+figure("color", figureColor); hold on; box on;
+    histogram(p16.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
+hold off;
