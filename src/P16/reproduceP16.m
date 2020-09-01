@@ -58,7 +58,7 @@ if freshRunEnabled
 else
     
     p16.output.path = "../../out/P16";
-    load(p16.output.path + "/p16_Ep574.mat"); % loads p16 object
+    load(p16.output.path + "/p16.mat"); % loads p16 object
     
 end
 
@@ -174,7 +174,7 @@ figure("color", figureColor); hold on; box on;
     xlim(p16.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["p16 sample", "p16 detection limit","Regression line"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["p16 sample", "p16 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(p16.output.path + "/P16zoneLiso.png", "-m4 -transparent")
 hold off;

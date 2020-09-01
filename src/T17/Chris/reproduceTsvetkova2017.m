@@ -4,17 +4,17 @@ format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("../../../../libmatlab"),"-begin");
-addpath(genpath("../"),"-begin");
+addpath(genpath("../../../../../libmatlab"),"-begin");
+addpath(genpath("../../"),"-begin");
 
 fontSize = 13;
 figureColor = "white";
 
 global alpha
 alpha = 0.0;
-threshLim = 2.e-6;
+threshLim = 8.6e-7;
 
-d = importdata("../../in/T17table4_2.txt",' ',47);
+d = importdata("../../../in/T17table4_2.txt",' ',47);
 
 dsorted = sortrows(d.data,1);
 zone = dsorted(:,1)+1;
@@ -30,7 +30,7 @@ logZoneMax = getMaxRedshift( logZone ... xvec
                     );
 
 figure; hold on; box on;
-zoneLim = [1, 6]; % 2200];
+zoneLim = [1, 6.5]; % 2200];
 
     plot(zone,liso,'.','markersize',20)
 
@@ -84,7 +84,7 @@ zoneLim = [1, 6]; % 2200];
     
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/T17/T17zoneLiso.png", "-m2 -transparent")
+    export_fig("../../../out/T17/T17zoneLiso.png", "-m4 -transparent")
 
 hold off
 epstat.tau
@@ -92,14 +92,14 @@ epstat.tau
 LOG_THRESH_LIM = log(threshLim);
 verticalDistanceFromThreshLine = logLiso - getLogThreshLim(logZone,threshLim) + LOG_THRESH_LIM;
 figure; hold on; box on;
-    h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.5);
+    h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.25);
     line([LOG_THRESH_LIM/log(10), LOG_THRESH_LIM/log(10)], [0, 50],'color','black','linewidth',2,'linestyle','--')
     legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "fontSize", fontSize-2,'color',figureColor)
-    xlabel("Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontSize", fontSize-2)
+    xlabel("log10( Flux [ ergs / s / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize-2)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/T17/T17histSbol.png", "-m2 -transparent")
+    export_fig("../../../out/T17/T17histSbol.png", "-m4 -transparent")
 hold off;
 
 figure; hold on; box on;
@@ -107,31 +107,14 @@ figure; hold on; box on;
     line([zoneLim(1), zoneLim(2)],[threshLim, threshLim],'color','black','linewidth',2,'linestyle','--')
     legend(["P16 sample", "P16 detection limit"], "fontSize", fontSize,'color',figureColor)
     xlabel("z + 1", "interpreter", "tex", "fontSize", fontSize)
-    ylabel("Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
+    ylabel("Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
+    xlim(zoneLim)
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../out/T17/T17zoneSbol.png", "-m2 -transparent")
+    export_fig("../../../out/T17/T17zoneSbol.png", "-m4 -transparent")
 hold off;
 
 
 % generate alpha-tau curve
 plotZoneEisoDependency
-%{
-figure; hold on; box on;
-    plot(zone,liso/zone.^minTau.alpha,'.','markersize',20);
-    zoneGrid = 1.001:0.001:zoneLim(2);
-    threshGrid = exp( getLogThreshLim(log(zoneGrid),threshLim) );
-    plot( zoneGrid ...
-        , threshGrid ...
-        , "linewidth", 2 ...
-        , 'color', 'black' ...
-        );
-    xlim(zoneLim);
-    ylim([1.e46, 5.e53]);
-    xlabel("z + 1", "fontSize", fontSize)
-    ylabel("L_{0} [ ergs / s ]", "fontSize", fontSize)
-    set(gca,'yscale','log');
-    legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
-hold off;
-%}

@@ -12,12 +12,12 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
     t17 = struct();
-    t17.thresh.val = 1.e-07;
+    t17.thresh.val = 8.6e-07;
     t17.thresh.logVal = log(t17.thresh.val);
 
     t17.input.file.path = "../../in/T17table4_2.txt";
@@ -41,7 +41,30 @@ if freshRunEnabled
     t17.thresh.logRange = t17.thresh.logMin:0.2:t17.thresh.logMax;
     t17.thresh.logRangeLen = length(t17.thresh.logRange);
     t17.estatList = cell(t17.thresh.logRangeLen,1);
-    %return
+    %new
+    %{
+    t17.estat.logxMax.alpha.tau.zero
+    t17.thresh.logZoneLimits = [1,12];
+    t17.thresh.logZone = log(t17.thresh.logZoneLimits(1)):0.02:log(t17.thresh.logZoneLimits(2)); % the range of z+1 for which the detection threshold will be drawn.
+    t17.thresh.zone = exp(t17.thresh.logZone);
+    t17.thresh.logLiso = t17.thresh.logVal + getLogLisoLumDisTerm(t17.thresh.zone);
+    t17.thresh.liso = exp(t17.thresh.logLiso);
+    figure("color", figureColor); hold on; box on;
+    plot( t17.zone ...
+        , t17.liso ...
+        , "." ...
+        , "markersize", 15 ...
+        , "linewidth", lineWidth ...
+        );
+    plot( t17.thresh.zone ...
+        , t17.thresh.liso ...
+        , "color", "black" ...
+        , "linewidth", lineWidth ...
+        );
+    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+    hold off;
+    return
+    %}
     for i = 1:t17.thresh.logRangeLen
         t17.estatList{i} = EfronStat( t17.logZone ... logx
                                     , t17.logLiso ... logy
@@ -50,12 +73,12 @@ if freshRunEnabled
                                     );
     end
 
-    save(t17.output.path + "/t17.mat","t17");
+    save(t17.output.path + "/t17_8.6e-7.mat","t17");
 
 else
     
     t17.output.path = "../../out/t17";
-    load(t17.output.path + "/t17.mat"); % loads t17 object
+    load(t17.output.path + "/t17_8.6e-7.mat"); % loads t17 object
     
 end
 
@@ -79,9 +102,9 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(t17.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    scatter(t17.thresh.val,-5,100,'black')
-    annotation('textarrow',[.45,.5],[.75,.75],'String','t17 detection threshold','fontsize',11);
-    annotation('textarrow',[.45,.5],[.3,.3],'String','\tau = -5.0','fontsize',11);
+    scatter(t17.thresh.val,t17.estat.logxMax.tau,100,'black')
+    annotation('textarrow',[.63,.68],[.75,.75],'String','t17 detection threshold','fontsize',11);
+    annotation('textarrow',[.63,.68],[.375,.375],'String','\tau = -5.77','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -100,8 +123,8 @@ figure("color", figureColor); hold on; box on;
     %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     scatter(t17.thresh.val, t17.estat.logxMax.alpha.tau.zero, 100, 'black');
     %scatter(4.5e-7, 0, 100, [1,0,1]);
-    annotation('textarrow',[.59,.54],[.85,.85],'String','t17 detection threshold','fontsize',11);
-    annotation('textarrow',[.59,.54],[.728,.728],'String','\alpha = 2.53','fontsize',11);
+    annotation('textarrow',[.625,.675],[.4,.4],'String','t17 detection threshold','fontsize',11);
+    annotation('textarrow',[.625,.675],[.623,.623],'String','\alpha = 1.70','fontsize',11);
     %annotation('textarrow',[.7,.65],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
@@ -109,9 +132,7 @@ figure("color", figureColor); hold on; box on;
     export_fig(t17.output.path + "/t17threshAlpha.png", "-m4 -transparent")
 hold off;
 
-
 % plot the original bivariate data for zone-liso
-
 
 t17.thresh.logZoneLimits = [1,12];
 t17.thresh.logZone = log(t17.thresh.logZoneLimits(1)):0.02:log(t17.thresh.logZoneLimits(2)); % the range of z+1 for which the detection threshold will be drawn.
@@ -171,7 +192,7 @@ figure("color", figureColor); hold on; box on;
     xlim(t17.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["t17 sample", "t17 detection limit","Regression line"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["t17 sample", "t17 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(t17.output.path + "/t17zoneLiso.png", "-m4 -transparent")
 hold off;
@@ -200,7 +221,8 @@ figure("color", figureColor); hold on; box on;
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(t17.output.path + "/t17zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
-
+%{
 figure("color", figureColor); hold on; box on;
     histogram(t17.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
 hold off;
+%}
