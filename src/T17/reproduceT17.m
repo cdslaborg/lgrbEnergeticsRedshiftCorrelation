@@ -12,12 +12,13 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
     t17 = struct();
-    t17.thresh.val = 8.6e-07;
+    %t17.thresh.val = 1.1e-6; % to match graph threshold
+    t17.thresh.val = 8.6.e-07; % for \alpha = 1.7
     t17.thresh.logVal = log(t17.thresh.val);
 
     t17.input.file.path = "../../in/T17table4_3.txt";
@@ -104,7 +105,7 @@ figure("color", figureColor); hold on; box on;
     xline(t17.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     scatter(t17.thresh.val,t17.estat.logxMax.tau,100,'black')
     annotation('textarrow',[.63,.68],[.75,.75],'String','t17 detection threshold','fontsize',11);
-    annotation('textarrow',[.63,.68],[.375,.375],'String','\tau = -5.77','fontsize',11);
+    annotation('textarrow',[.63,.68],[.33,.33],'String','\tau = -5.42','fontsize',11);
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
