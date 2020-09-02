@@ -14,7 +14,7 @@ global alpha
 alpha = 0.0;
 threshLim = 8.6e-7;
 
-d = importdata("../../../in/T17table4_2.txt",' ',47);
+d = importdata("../../../in/T17table4_3.txt",' ',47);
 
 dsorted = sortrows(d.data,1);
 zone = dsorted(:,1)+1;
