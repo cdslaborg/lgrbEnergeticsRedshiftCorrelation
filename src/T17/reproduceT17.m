@@ -18,7 +18,7 @@ if freshRunEnabled
 
     t17 = struct();
     %t17.thresh.val = 1.1e-6; % to match graph threshold
-    t17.thresh.val = 8.6.e-07; % for \alpha = 1.7
+    t17.thresh.val = 8.6e-07; % for \alpha = 1.7
     t17.thresh.logVal = log(t17.thresh.val);
 
     t17.input.file.path = "../../in/T17table4_3.txt";

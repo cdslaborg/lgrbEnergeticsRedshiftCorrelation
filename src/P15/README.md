@@ -1,1 +1,0 @@
-This folder contains the reproduction of the results of Petrosian et al. (2015).
