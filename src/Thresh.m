@@ -28,13 +28,13 @@ classdef Thresh
         function self = Thresh(observerLogThresh, threshType)
             self.type = struct();
             self.type.val = "flux";
-            self.type.isFlux = false;
-            self.type.isFluence = false;
+            self.type.isFlux = 0;
+            self.type.isFluence = 0;
             if nargin==2; self.type.val = threshType; end
 
-            if strcmpi(self.type.val,"fluence")
+            if strcmpi(threshType,"fluence")
                 self.type.isFluence = true;
-            elseif strcmpi(self.type.val,"flux")
+            elseif strcmpi(threshType,"flux")
                 self.type.isFlux = true;
             else
                 error("threshType must be either flux or fluence.");
