@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -44,7 +44,7 @@ if freshRunEnabled
     L19.thresh.logRangeLen = length(L19.thresh.logRange);
     L19.estatList = cell(L19.thresh.logRangeLen,1);
     %new
-    
+    %{
     L19.estat.logxMax.alpha.tau.zero
     L19.thresh.logZoneLimits = [1,12];
     L19.thresh.logZone = log(L19.thresh.logZoneLimits(1)):0.02:log(L19.thresh.logZoneLimits(2)); % the range of z+1 for which the detection threshold will be drawn.
@@ -66,7 +66,7 @@ if freshRunEnabled
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     hold off;
     return
-    
+    %}
     for i = 1:L19.thresh.logRangeLen
         L19.estatList{i} = EfronStat( L19.logZone ... logx
                                     , L19.logEiso ... logy
