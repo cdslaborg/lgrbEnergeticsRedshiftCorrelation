@@ -28,10 +28,9 @@ classdef Thresh
         function self = Thresh(observerLogThresh, threshType)
             self.type = struct();
             self.type.val = "flux";
-            self.type.isFlux = 0;
-            self.type.isFluence = 0;
+            self.type.isFlux = false;
+            self.type.isFluence = false;
             if nargin==2; self.type.val = threshType; end
-
             if strcmpi(threshType,"fluence")
                 self.type.isFluence = true;
             elseif strcmpi(threshType,"flux")
@@ -45,7 +44,7 @@ classdef Thresh
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         function logValInt = getLogValInt(self,logZone)
-            % get intrinsic logValue of the detection threshold at the given log(redshift+1)
+            % get the INTrinsic logValue of the detection threshold at the given log(redshift+1)
             zone = exp(logZone);
             logValInt = Thresh.LOGMPC2CMSQ4PI ...           % log(cm^2)
                       + 2*getLogLumDisWicMPC(zone) ...      % log(MPC^2)

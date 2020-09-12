@@ -1,13 +1,12 @@
-%clear all;
+clear all;
 close all;
 format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("..\..\..\..\libmatlab\astro"),"-begin");
 addpath(genpath("..\..\..\..\libmatlab"),"-begin");
-addpath(genpath("..\"),"-begin");
-addpath(genpath("..\chris\"),"-begin");
+addpath(genpath('..\'),"-begin");
+addpath(genpath('..\chris\'),"-begin");
 
 fileType = ".png";
 outPath = "../../out/simulation/";
@@ -23,8 +22,8 @@ figColor = 'white';
 figVisibility = 'on';
 dryRunEiso = false;
 
-fontSize = 13;
 skip = 100;
+fontSize = 13;
 global alpha; alpha = 0.0;
 
 rangeX = [1.e0, 3.6e1]; % redshift+1
