@@ -49,12 +49,12 @@ if freshRunEnabled
                                     );
     end
 
-    save(y15.output.path + "/y15.mat","y15");
+    save(y15.output.path + "/y15_2.mat","y15");
 
 else
     
     y15.output.path = "../../out/Y15";
-    load(y15.output.path + "/y15.mat"); % loads y15 object
+    load(y15.output.path + "/y15_2.mat"); % loads y15 object
     
 end
 
