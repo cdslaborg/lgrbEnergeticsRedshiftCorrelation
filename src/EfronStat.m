@@ -8,6 +8,7 @@ classdef EfronStat < dynamicprops
         logx
         logy
         logxMax
+        logxMaxValues
         %logyMin
         logxDistanceFromLogThresh
         logyDistanceFromLogThresh
@@ -41,6 +42,10 @@ classdef EfronStat < dynamicprops
             self.logy = logy;
             self.thresh = Thresh(observerLogThresh, threshType);
 
+            % compute the logxMax values
+
+            self.logxMaxValues = self.getLogxMaxAtThresh();
+
             % compute Efron stat
 
             disp("computing the Efron Petrosian Statistics for the log-detection threshold limit of " + string(observerLogThresh) + " ...");
@@ -67,8 +72,15 @@ classdef EfronStat < dynamicprops
 
         function logxMaxAtThresh = getLogxMaxAtThresh(self)
             %
-            % Return the maximum logx at which the logxbox of the observational 
-            % data points meet the detection threshold for all data points.
+            %   Return the maximum logx at which the logxbox of the observational 
+            %   data points meet the detection threshold for all data points.
+            %   This function calls the getLogValInt() method of the Thresh() class.
+            %   
+            %   NOTE
+            %
+            %   This function needs to be called only once since the boxes and their members
+            %   do not change for different values of alpha decorrelation.
+            %   However, they do change for different values of redshift.
             %
             logxMaxAtThresh = zeros(self.ndata,1);
             for i = 1:self.ndata
@@ -94,12 +106,13 @@ classdef EfronStat < dynamicprops
 
         function logxMax = getLogxMaxTau(self,logyLocal)
             %
-            % Compute and return the Tau statistic via xmax-boxes for the input data.
+            %   Compute and return the Tau statistic via xmax-boxes for the input data.
+            %   This function calls getLogxMaxAtThresh() method.
             %
             if nargin<2; logyLocal = self.logy; end
 
             logxMax = struct();
-            logxMax.val = self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
+            logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
             logxMax.box = cell(self.ndata,1);
 
             tauNumerator = 0.;
@@ -125,10 +138,13 @@ classdef EfronStat < dynamicprops
 
         function tauGivenAlpha = getLogxMaxTauGivenAlpha(self,alpha)
             %
-            % Return the Tau corresponding to an input alpha value. 
-            % This is done by first decorrelating the observational 
-            % data and then computing the Tau statistic for the new
-            % decorrelated dataset for the given alpha.
+            %   Return the Tau corresponding to an input alpha value. 
+            %   This is done by first decorrelating the observational 
+            %   data and then computing the Tau statistic for the new
+            %   decorrelated dataset for the given alpha.
+            %   This also requires the decorrelation of the detection 
+            %   threshold.
+            %   This function calls getLogxMaxTau() method.
             %
             logyLocal = self.logy - alpha*self.logx;
             logxMax = self.getLogxMaxTau(logyLocal);
@@ -143,7 +159,8 @@ classdef EfronStat < dynamicprops
             %
             getLogxMaxAlphaGivenTauHandle = @(alpha) abs(self.getLogxMaxTauGivenAlpha(alpha) - tau);
             options = optimset("MaxIter", 10000, "MaxFunEvals", 10000, "TolX", 5.e-3, "TolFun", 1.e-2);
-            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, 0, options);
+            % WARNING: DO NOT SET THE STARTING POINT OF THE SEARCH TO ZERO. 2 IS GOOD STARTING POINT FOR THE SEARCH.
+            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, 2, options);
             if exitflag~=1
                 disp("failed to converge " + " with fval = " + string(fval));
                 disp("i = " + string(i));
