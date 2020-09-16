@@ -44,7 +44,7 @@ classdef EfronStat < dynamicprops
 
             % compute the logxMax values
 
-            self.logxMaxValues = self.getLogxMaxAtThresh();
+            %self.logxMaxValues = self.getLogxMaxAtThresh();
 
             % compute Efron stat
 
