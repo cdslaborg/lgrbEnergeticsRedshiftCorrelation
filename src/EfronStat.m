@@ -67,8 +67,9 @@ classdef EfronStat < dynamicprops
 
         function logxMaxAtThresh = getLogxMaxAtThresh(self)
             %
-            % Return the maximum logx at which the logxbox of the observational 
-            % data points meet the detection threshold for all data points.
+            %   Return the maximum logx at which the logxbox of the observational 
+            %   data points meet the detection threshold for all data points.
+            %   This function calls the getLogValInt() method of the Thresh() class.
             %
             logxMaxAtThresh = zeros(self.ndata,1);
             for i = 1:self.ndata
@@ -94,7 +95,8 @@ classdef EfronStat < dynamicprops
 
         function logxMax = getLogxMaxTau(self,logyLocal)
             %
-            % Compute and return the Tau statistic via xmax-boxes for the input data.
+            %   Compute and return the Tau statistic via xmax-boxes for the input data.
+            %   This function calls getLogxMaxAtThresh() method.
             %
             if nargin<2; logyLocal = self.logy; end
 
@@ -125,10 +127,13 @@ classdef EfronStat < dynamicprops
 
         function tauGivenAlpha = getLogxMaxTauGivenAlpha(self,alpha)
             %
-            % Return the Tau corresponding to an input alpha value. 
-            % This is done by first decorrelating the observational 
-            % data and then computing the Tau statistic for the new
-            % decorrelated dataset for the given alpha.
+            %   Return the Tau corresponding to an input alpha value. 
+            %   This is done by first decorrelating the observational 
+            %   data and then computing the Tau statistic for the new
+            %   decorrelated dataset for the given alpha.
+            %   This also requires the decorrelation of the detection 
+            %   threshold.
+            %   This function calls getLogxMaxTau() method.
             %
             logyLocal = self.logy - alpha*self.logx;
             logxMax = self.getLogxMaxTau(logyLocal);
