@@ -8,6 +8,7 @@ classdef EfronStat < dynamicprops
         logx
         logy
         logxMax
+        logxMaxValues
         %logyMin
         logxDistanceFromLogThresh
         logyDistanceFromLogThresh
@@ -41,6 +42,10 @@ classdef EfronStat < dynamicprops
             self.logy = logy;
             self.thresh = Thresh(observerLogThresh, threshType);
 
+            % compute the logxMax values
+
+            self.logxMaxValues = self.getLogxMaxAtThresh();
+
             % compute Efron stat
 
             disp("computing the Efron Petrosian Statistics for the log-detection threshold limit of " + string(observerLogThresh) + " ...");
@@ -70,6 +75,12 @@ classdef EfronStat < dynamicprops
             %   Return the maximum logx at which the logxbox of the observational 
             %   data points meet the detection threshold for all data points.
             %   This function calls the getLogValInt() method of the Thresh() class.
+            %   
+            %   NOTE
+            %
+            %   This function needs to be called only once since the boxes and their members
+            %   do not change for different values of alpha decorrelation.
+            %   However, they do change for different values of redshift.
             %
             logxMaxAtThresh = zeros(self.ndata,1);
             for i = 1:self.ndata
@@ -101,6 +112,7 @@ classdef EfronStat < dynamicprops
             if nargin<2; logyLocal = self.logy; end
 
             logxMax = struct();
+            %logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
             logxMax.val = self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
             logxMax.box = cell(self.ndata,1);
 
