@@ -44,7 +44,7 @@ classdef EfronStat < dynamicprops
 
             % compute the logxMax values
 
-            %self.logxMaxValues = self.getLogxMaxAtThresh();
+            self.logxMaxValues = self.getLogxMaxAtThresh();
 
             % compute Efron stat
 
@@ -112,8 +112,7 @@ classdef EfronStat < dynamicprops
             if nargin<2; logyLocal = self.logy; end
 
             logxMax = struct();
-            %logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
-            logxMax.val = self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
+            logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
             logxMax.box = cell(self.ndata,1);
 
             tauNumerator = 0.;
