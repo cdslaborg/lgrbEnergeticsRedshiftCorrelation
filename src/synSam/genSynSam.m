@@ -22,7 +22,7 @@ function synSam = genSynSam(threshType)
 
     synSam.detProb = b10.data(Mask,icol.detProb); synSam.detProb = synSam.detProb(1:skip:end);
 
-    synSam.z = b10.data(Mask,icol.z) + 1; synSam.z = synSam.z(1:skip:end);
+    synSam.z = b10.data(Mask,icol.z); synSam.z = synSam.z(1:skip:end);
     synSam.logz = log(synSam.z);
     synSam.zone = synSam.z + 1;
     synSam.logZone = log(synSam.zone);

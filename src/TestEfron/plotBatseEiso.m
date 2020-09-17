@@ -16,7 +16,7 @@ synSam.output.path = "../../out/synSam";
 load(synSam.output.path + "/" + matFileName);
 
 rangeX = [1.e0, 3.6e1]; % redshift+1
-rangeY = [1.e46, 3.e56]; % log10Eiso
+rangeY = [1.e48, 3.e56]; % log10Eiso
 %b10 = importdata("..\..\20181213_BatseLgrbRedshift\git\___SyntheticSample___\winx64\intel\release\static\serial\bin\out\kfacOneThird\syntheticSampleB10.csv");
 detProbIndex = 10;
 sbolAtHalfDetectionProb = synSam.thresh.val;
@@ -25,7 +25,7 @@ sbolAtHalfDetectionProb = synSam.thresh.val;
 DataX = synSam.z+1 ;
 DataY = synSam.yint;
 detectionProb = synSam.detProb;
-logDataX = synSam.logz;
+logDataX = synSam.logZone;
 logDataY = synSam.logyint;
 ndata = synSam.ndata;
 
@@ -39,7 +39,7 @@ figure; hold on; box on; colormap('cool');
     scatter ( DataX ...
             , DataY ...
             ..., 0.75*ones(ZModel.(ZModel.ID{imodel}).Synthetic.count,1) ...
-            , 20.75*ones(ndata,1) ...
+            , 20.75 ...
             ..., 40*ones(sum(Mask),1) ...
             , detectionProb ...
             , '.' ..., 'filled' ...
@@ -51,7 +51,7 @@ figure; hold on; box on; colormap('cool');
     xlim(rangeX);
     ylim(rangeY);
     xlabel("z + 1","interpreter", "tex","fontsize",fontSize)
-    ylabel("Isotropic Radiated Energy: E_{iso} [ ergs/s ]","interpreter", "tex","fontsize",fontSize)
+    ylabel("Isotropic Radiated Energy: E_{iso} [ ergs / s ]","interpreter", "tex","fontsize",fontSize)
     set(gca,'xscale','log','yscale','log');
 
     % add threshold
@@ -90,7 +90,8 @@ figure; hold on; box on; colormap('cool');
 logRefinedZoneMax = getXmax ( logDataX ... xvec
                             , logDataY ... yvec
                             , @getLogThreshLim ... getThreshLim
-                            );
+                            , sbolAtHalfDetectionProb ...
+                        );
 
 stat = getZoneEisoDependency(logDataX, logDataY, logRefinedZoneMax);
 statCount = length(stat);
