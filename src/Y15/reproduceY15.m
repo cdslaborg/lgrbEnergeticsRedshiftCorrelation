@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -49,12 +49,12 @@ if freshRunEnabled
                                     );
     end
 
-    save(y15.output.path + "/y15_2.mat","y15");
+    save(y15.output.path + "/y15.mat","y15");
 
 else
     
     y15.output.path = "../../out/Y15";
-    load(y15.output.path + "/y15_2.mat"); % loads y15 object
+    load(y15.output.path + "/y15.mat"); % loads y15 object
     
 end
 

@@ -4,7 +4,7 @@ format compact; format long;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-addpath(genpath("D:\Dropbox\Projects\libmatlab"),"-begin");
+addpath(genpath("..\..\..\..\libmatlab"),"-begin");
 
 fontSize = 13;
 skip = 100;
