@@ -1,6 +1,6 @@
 function synSam = genSynSam(threshType)
 
-    b10 = importdata("D:\Dropbox\Projects\20181213_BatseLgrbRedshift\git\___SyntheticSample___\winx64\intel\release\static\serial\bin\out\kfacOneThird\syntheticSampleB10.csv");
+    b10 = importdata("..\..\..\..\20181213_BatseLgrbRedshift\git\___SyntheticSample___\winx64\intel\release\static\serial\bin\out\kfacOneThird\syntheticSampleB10.csv");
 
     if strcmpi(threshType,"flux")
         icol.logyint = 1; % logliso
