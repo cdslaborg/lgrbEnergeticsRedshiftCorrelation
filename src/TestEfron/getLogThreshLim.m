@@ -7,7 +7,7 @@ function logThresh = getLogThreshLim(logZone,varargin)
         %THRESH_LIM = 5.e-6; % ergs / cm^2 
     end
 
-    MPC2CM = 3.09e24;   % 1 Mega Parsec = MPC2CM centimeters.
+    MPC2CM = 3.086e24;   % 1 Mega Parsec = MPC2CM centimeters.
     LOGMPC2CMSQ4PI = log(4.0*pi) + 2.0*log(MPC2CM);     % log(MegaParsec2centimeters).
     LOG_THRESH_LIM = log(THRESH_LIM);% + 3;
     zone = exp(logZone);

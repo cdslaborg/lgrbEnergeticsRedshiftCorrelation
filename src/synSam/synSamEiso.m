@@ -1,6 +1,6 @@
 %clc;
 clear all;
-close all;
+%close all;
 %clear classes;
 %format compact; format long;
 filePath = mfilename('fullpath');

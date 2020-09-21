@@ -1,4 +1,4 @@
-function xmax = getXmax(xvec,yvec,getThreshLim)
+function xmax = getXmax(xvec,yvec,getLogThreshLimHandle,threshLim)
     ndata = length(xvec);
     if ndata~=length(yvec)
         error("ndata~=length(y): " + string(xvec) + " " + string(yvec) );
@@ -7,7 +7,7 @@ function xmax = getXmax(xvec,yvec,getThreshLim)
     xmax = zeros(ndata,1);
     for i = 1:ndata
 
-        getLimNew = @(x) abs(getThreshLim(x) - yvec(i));
+        getLimNew = @(x) abs(getLogThreshLimHandle(x,threshLim) - yvec(i));
         options = optimset("MaxIter", 10000, "MaxFunEvals", 10000);
         [x, funcVal, exitflag, output] = fminsearch(getLimNew, xvec(i), options);
 
