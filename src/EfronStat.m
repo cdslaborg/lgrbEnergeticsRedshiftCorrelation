@@ -113,6 +113,7 @@ classdef EfronStat < dynamicprops
 
             logxMax = struct();
             logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
+            %logxMax.val = self.getLogxMaxAtThresh();
             logxMax.box = cell(self.ndata,1);
 
             tauNumerator = 0.;
@@ -160,7 +161,7 @@ classdef EfronStat < dynamicprops
             getLogxMaxAlphaGivenTauHandle = @(alpha) abs(self.getLogxMaxTauGivenAlpha(alpha) - tau);
             options = optimset("MaxIter", 10000, "MaxFunEvals", 10000, "TolX", 5.e-3, "TolFun", 1.e-2);
             % WARNING: DO NOT SET THE STARTING POINT OF THE SEARCH TO ZERO. 2 IS GOOD STARTING POINT FOR THE SEARCH.
-            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, 2, options);
+            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, -0.5, options);
             if exitflag~=1
                 disp("failed to converge " + " with fval = " + string(fval));
                 disp("i = " + string(i));
