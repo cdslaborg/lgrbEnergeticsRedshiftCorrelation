@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -81,7 +81,7 @@ figure("color", figureColor); hold on; box on;
     scatter(2e-8,-5.4,100,'black')
     annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.4],[.255,.255],'String','\tau = -5.4','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(y15.output.path + "/threshTau.png", "-m4 -transparent")
@@ -96,13 +96,13 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(y15.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
+    %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     scatter(2e-8, 2.15, 100, 'black');
-    scatter(2.214e-7, 0, 100, [1,0,1]);
+    %scatter(2.214e-7, 0, 100, [1,0,1]);
     annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.4],[.785,.785],'String','\alpha = 2.15','fontsize',11);
-    annotation('textarrow',[.65,.6],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    %annotation('textarrow',[.65,.6],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(y15.output.path + "/threshAlpha.png", "-m4 -transparent")
@@ -158,7 +158,7 @@ figure("color", figureColor); hold on; box on;
     plot( exp( y15.regression.logZone ) ...
         , exp( y15.regression.logLiso ) ...
         , "--" ...
-        , "color", [1,0,1] ...
+        , "color", [0,1,0] ...
         , "linewidth", 1.5 * lineWidth ...
         );
     line([y15.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')

@@ -74,12 +74,12 @@ if freshRunEnabled
                                     );
     end
 
-    save(t17.output.path + "/t17_8.6e-7.mat","t17");
+    save(t17.output.path + "/t17.mat","t17");
 
 else
     
     t17.output.path = "../../out/t17";
-    load(t17.output.path + "/t17_8.6e-7.mat"); % loads t17 object
+    load(t17.output.path + "/t17.mat"); % loads t17 object
     
 end
 
@@ -106,7 +106,7 @@ figure("color", figureColor); hold on; box on;
     scatter(t17.thresh.val,t17.estat.logxMax.tau,100,'black')
     annotation('textarrow',[.63,.68],[.75,.75],'String','t17 detection threshold','fontsize',11);
     annotation('textarrow',[.63,.68],[.33,.33],'String','\tau = -5.42','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(t17.output.path + "/t17threshTau.png", "-m4 -transparent")
@@ -121,13 +121,10 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(t17.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     scatter(t17.thresh.val, t17.estat.logxMax.alpha.tau.zero, 100, 'black');
-    %scatter(4.5e-7, 0, 100, [1,0,1]);
     annotation('textarrow',[.625,.675],[.4,.4],'String','t17 detection threshold','fontsize',11);
     annotation('textarrow',[.625,.675],[.623,.623],'String','\alpha = 1.70','fontsize',11);
-    %annotation('textarrow',[.7,.65],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(t17.output.path + "/t17threshAlpha.png", "-m4 -transparent")
@@ -181,15 +178,9 @@ figure("color", figureColor); hold on; box on;
     plot( exp( t17.regression.logZone ) ...
         , exp( t17.regression.logLiso ) ...
         , "--" ...
-        , "color", [1,0,1] ...
+        , "color", [0,1,0] ...
         , "linewidth", 1.5 * lineWidth ...
         );
-    %line([t17.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
-    %line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
-    %scatter(2.77,2.9e51,75,'black')
-    %text(2,1.e55,'N_{i}','fontsize',13);
-    %annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
-    %yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(t17.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);

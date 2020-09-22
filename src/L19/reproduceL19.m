@@ -107,7 +107,7 @@ figure("color", figureColor); hold on; box on;
     scatter(L19.thresh.val,L19.estat.logxMax.tau,100,'black')
     annotation('textarrow',[.48,.53],[.75,.75],'String','L19 detection threshold','fontsize',11);
     annotation('textarrow',[.48,.53],[.25,.25],'String','\tau = -6.15','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(L19.output.path + "/L19threshTau.png", "-m4 -transparent")
@@ -122,13 +122,10 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(L19.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     scatter(L19.thresh.val, L19.estat.logxMax.alpha.tau.zero, 100, 'black');
-    %scatter(4.5e-7, 0, 100, [1,0,1]);
     annotation('textarrow',[.48,.53],[.4,.4],'String','L19 detection threshold','fontsize',11);
     annotation('textarrow',[.48,.53],[.72,.72],'String','\alpha = 1.34','fontsize',11);
-    %annotation('textarrow',[.7,.65],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
-    xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(L19.output.path + "/L19threshAlpha.png", "-m4 -transparent")
@@ -182,15 +179,9 @@ figure("color", figureColor); hold on; box on;
     plot( exp( L19.regression.logZone ) ...
         , exp( L19.regression.logEiso ) ...
         , "--" ...
-        , "color", [1,0,1] ...
+        , "color", [0,1,0] ...
         , "linewidth", 1.5 * lineWidth ...
         );
-    %line([L19.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
-    %line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
-    %scatter(2.77,2.9e51,75,'black')
-    %text(2,1.e55,'N_{i}','fontsize',13);
-    %annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
-    %yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(L19.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("E_{iso} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
