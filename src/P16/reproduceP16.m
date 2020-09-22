@@ -32,10 +32,13 @@ if freshRunEnabled
     p16.logZone = log(p16.zone);
     p16.logLiso = log(p16.liso);
 
+    logxMaxAlphaSearchStart = 2;
+
     p16.estat = EfronStat   ( p16.logZone ... logx
                             , p16.logLiso ... logy
                             , p16.thresh.logVal ... observerLogThresh
                             , "flux" ... threshType
+                            , logxMaxAlphaSearchStart ...
                             );
 
     p16.logPbol = p16.estat.logyDistanceFromLogThresh + p16.thresh.logVal;
@@ -50,6 +53,7 @@ if freshRunEnabled
                                     , p16.logLiso ... logy
                                     , p16.thresh.logRange(i) ... observerLogThresh
                                     , "flux" ... threshType
+                                    , logxMaxAlphaSearchStart ...
                                     );
     end
 

@@ -10,6 +10,7 @@ classdef EfronStat < dynamicprops
         logxMax
         logxMaxValues
         %logyMin
+        logxMaxAlphaSearchStart
         logxDistanceFromLogThresh
         logyDistanceFromLogThresh
     end
@@ -20,18 +21,23 @@ classdef EfronStat < dynamicprops
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        function self = EfronStat(logx, logy, observerLogThresh, threshType)
+        function self = EfronStat(logx, logy, observerLogThresh, threshType, logxMaxAlphaSearchStart)
             %
             % Given observational data logx and logy and a threshold cutoff value 
             % for logy (as a function of logx) and the threshold type, this class
             % computes the Efron-Petrosian statistic and returns an object containing
             % all of the necessary information about the analysis.
             %
+            if nargin<5
+                self.logxMaxAlphaSearchStart = -0.5;
+            else
+                self.logxMaxAlphaSearchStart = logxMaxAlphaSearchStart;
+            end
             self.ndata = length(logx);
             if self.ndata~=length(logy)
                 error("ndata~=length(y): " + string(logx) + " " + string(logy) );
             end
-            if nargin~=4
+            if nargin<4
                 error   ( "Incorrect number of input arguments. Usage:" ...
                         + newline ...
                         + "    EfronStat(xdata, ydata, observerLogThresh, threshType)" ...
@@ -161,7 +167,7 @@ classdef EfronStat < dynamicprops
             getLogxMaxAlphaGivenTauHandle = @(alpha) abs(self.getLogxMaxTauGivenAlpha(alpha) - tau);
             options = optimset("MaxIter", 10000, "MaxFunEvals", 10000, "TolX", 5.e-3, "TolFun", 1.e-2);
             % WARNING: DO NOT SET THE STARTING POINT OF THE SEARCH TO ZERO. 2 IS GOOD STARTING POINT FOR THE SEARCH.
-            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, 2, options);
+            [logxMaxAlphaGivenTau, funcVal, exitflag, output] = fminsearch(getLogxMaxAlphaGivenTauHandle, self.logxMaxAlphaSearchStart, options);
             if exitflag~=1
                 disp("failed to converge " + " with fval = " + string(fval));
                 disp("i = " + string(i));
