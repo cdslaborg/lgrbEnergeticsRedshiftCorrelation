@@ -107,7 +107,7 @@ figure("color", figureColor); hold on; box on;
     scatter(L19.thresh.val,L19.estat.logxMax.tau,100,'black')
     annotation('textarrow',[.48,.53],[.75,.75],'String','L19 detection threshold','fontsize',11);
     annotation('textarrow',[.48,.53],[.25,.25],'String','\tau = -6.15','fontsize',11);
-    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(L19.output.path + "/L19threshTau.png", "-m4 -transparent")
@@ -125,7 +125,7 @@ figure("color", figureColor); hold on; box on;
     scatter(L19.thresh.val, L19.estat.logxMax.alpha.tau.zero, 100, 'black');
     annotation('textarrow',[.48,.53],[.4,.4],'String','L19 detection threshold','fontsize',11);
     annotation('textarrow',[.48,.53],[.72,.72],'String','\alpha = 1.34','fontsize',11);
-    xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
+    xlabel("Detection Threshold Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(L19.output.path + "/L19threshAlpha.png", "-m4 -transparent")
