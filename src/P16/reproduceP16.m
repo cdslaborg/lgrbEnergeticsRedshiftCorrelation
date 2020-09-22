@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
