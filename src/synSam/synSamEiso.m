@@ -1,6 +1,6 @@
 %clc;
 clear all;
-%close all;
+close all;
 %clear classes;
 %format compact; format long;
 filePath = mfilename('fullpath');
@@ -9,10 +9,10 @@ cd(fileparts(mfilename('fullpath'))); % Change working directory to source code 
 addpath(genpath("../../../../libmatlab"),"-begin");
 addpath(genpath("../"),"-begin");
 
-fontSize = 13;
+fontSize = 9;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 threshType = "fluence";
 matFileName = "synSam" + threshType + ".mat";
@@ -70,22 +70,38 @@ for i = 1:synSam.thresh.logRangeLen
     synSam.alphaAtTauNegOne(i) = synSam.estatList{i}.logxMax.alpha.tau.negOne;
 end
 
+synSam.estat99 = EfronStat( synSam.logZone ... logx
+                            , synSam.logyint ... logy
+                            , synSam.thresh.logVal99 ... observerLogThresh
+                            , threshType ... threshType
+                            );
+
 figure("color", figureColor); hold on; box on;
     plot( exp( synSam.thresh.logRange ) ...
         , synSam.tauAtAlphaZero ...
         , "color", "red" ...
         , "linewidth", lineWidth ...
         );
-    p = xline(synSam.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    p = xline(synSam.thresh.val,"linewidth", 2, "linestyle", "-", "color", [0,0,0,0.3]);
     p1 = scatter(synSam.thresh.val,synSam.estat.logxMax.tau,100,'black');
+    p2 = scatter(synSam.thresh.val99,synSam.estat99.logxMax.tau,100,'black','s');
+    p3 = xline(synSam.thresh.val99,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     %annotation('textarrow',[.63,.68],[.75,.75],'String','synSam detection threshold','fontsize',11);
     %annotation('textarrow',[.63,.68],[.33,.33],'String','\tau = -5.42','fontsize',11);
     if strcmpi(threshType,"flux")
-        xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+        xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
+        citedWorks = "L_{iso} works";
     elseif strcmpi(threshType,"fluence")
-        xlabel("Detection Threshold Fluence [ergs / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+        xlabel("Detection Threshold Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
+        citedWorks = "L19";
     end
-    legend([p,p1],"detection limit at 50%-probability","\tau = " + string(synSam.estat.logxMax.tau + " at detection limit"),"location","southwest")
+    legend([p,p1,p3,p2]...
+        ,"detection limit at 50%-probability"...
+        ,"\tau = " + string(round(synSam.estat.logxMax.tau,2)) + " at detection limit" ...
+        ,"detection limit at 99%-probability (compareable to " + citedWorks + ")"...
+        ,"\tau = " + string(round(synSam.estat99.logxMax.tau,2)) + " at detection limit comparable to " + citedWorks ...
+        ,"location"...
+        , "northwest")
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(synSam.output.path + "/synSam" + threshType + "ThreshTau.png", "-m4 -transparent")
@@ -101,19 +117,27 @@ figure("color", figureColor); hold on; box on;
         , "color", "red" ...
         , "linewidth", lineWidth ...
         );
-    p2 = xline(synSam.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    p = xline(synSam.thresh.val,"linewidth", 2, "linestyle", "-", "color", [0,0,0,0.3]);
+    p2 = xline(synSam.thresh.val99,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
-    p3 = scatter(synSam.thresh.val, synSam.estat.logxMax.alpha.tau.zero, 100, 'black');
+    p1 = scatter(synSam.thresh.val, synSam.estat.logxMax.alpha.tau.zero, 100, 'black');
+    p3 = scatter(synSam.thresh.val99, synSam.estat99.logxMax.alpha.tau.zero, 100, 'black','s');
     %scatter(4.5e-7, 0, 100, [1,0,1]);
     %annotation('textarrow',[.625,.675],[.4,.4],'String','synSam detection threshold','fontsize',11);
     %annotation('textarrow',[.625,.675],[.623,.623],'String','\alpha = 1.70','fontsize',11);
     %annotation('textarrow',[.7,.65],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
     if strcmpi(threshType,"flux")
-        xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+        xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     elseif strcmpi(threshType,"fluence")
-        xlabel("Detection Threshold Fluence [ergs / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+        xlabel("Detection Threshold Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     end
-    legend([p2,p3],"detection limit at 50%-probability" , "\alpha = " + string(synSam.estat.logxMax.alpha.tau.zero + " at detection limit"),"location","southwest")
+    legend([p,p1,p2,p3]...
+            ,"detection limit at 50%-probability" ...
+            , "\alpha = " + string(round(synSam.estat.logxMax.alpha.tau.zero,2)) + " at detection limit"...
+            , "detection limit at 99%-probability (compareable to " + citedWorks + ")"...
+            , "\alpha = " + string(round(synSam.estat99.logxMax.alpha.tau.zero,2)) + " at detection limit comparable to " + citedWorks ...
+            ,"location"...
+            ,"southwest")
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
     export_fig(synSam.output.path + "/synSam" + threshType + "ThreshAlpha.png", "-m4 -transparent")
@@ -126,8 +150,10 @@ synSam.thresh.logZone = log(synSam.thresh.logZoneLimits(1)):0.02:log(synSam.thre
 synSam.thresh.zone = exp(synSam.thresh.logZone);
 if strcmpi(threshType,"flux")
     synSam.thresh.logyint = synSam.thresh.logVal + getLogLisoLumDisTerm(synSam.thresh.zone);
+    synSam.thresh99.logyint = synSam.thresh.logVal99 + getLogLisoLumDisTerm(synSam.thresh.zone);
 elseif strcmpi(threshType,"fluence")
     synSam.thresh.logyint = synSam.thresh.logVal + getLogEisoLumDisTerm(synSam.thresh.zone);
+    synSam.thresh99.logyint = synSam.thresh.logVal99 + getLogEisoLumDisTerm(synSam.thresh.zone);
 end
 synSam.thresh.yint = exp(synSam.thresh.logyint);
 
@@ -136,6 +162,15 @@ synSam.corrected.logyint = synSam.logyint(:) - synSam.getZcorrection( synSam.log
 synSam.corrected.yint = exp(synSam.corrected.logyint);
 synSam.corrected.thresh.logyint = synSam.thresh.logyint(:) - synSam.getZcorrection( synSam.thresh.logZone(:) );
 synSam.corrected.thresh.yint = exp(synSam.corrected.thresh.logyint);
+
+% doing the same calculations as above the the threshold at 99% probability
+% of detection
+synSam.thresh99.yint = exp(synSam.thresh99.logyint);
+synSam.getZcorrection99 = @(logZone) synSam.estat99.logxMax.alpha.tau.zero * logZone;
+synSam.corrected.logyint99 = synSam.logyint(:) - synSam.getZcorrection( synSam.logZone(:) );
+synSam.corrected.yint99 = exp(synSam.corrected.logyint99);
+synSam.corrected.thresh99.logyint = synSam.thresh99.logyint(:) - synSam.getZcorrection( synSam.thresh.logZone(:) );
+synSam.corrected.thresh99.yint = exp(synSam.corrected.thresh99.logyint);
 
 % fit the data by keeping the slope constant
 
@@ -168,12 +203,18 @@ figure("color", figureColor); hold on; box on;colormap('cool');
         , "color", "black" ...
         , "linewidth", lineWidth ...
         );
-    plot( exp( synSam.regression.logZone ) ...
-        , exp( synSam.regression.logyint ) ...
-        , "--" ...
-        , "color", [0,1,0] ...
-        , "linewidth", 1.5 * lineWidth ...
+    plot( synSam.thresh.zone ...
+        , synSam.thresh99.yint ...
+        ,"--"...
+        , "color", "black" ...
+        , "linewidth", lineWidth ...
         );
+%     plot( exp( synSam.regression.logZone ) ...
+%         , exp( synSam.regression.logyint ) ...
+%         , "--" ...
+%         , "color", [0,1,0] ...
+%         , "linewidth", 1.5 * lineWidth ...
+%         );
     
     
     CBar = colorbar;
@@ -193,7 +234,17 @@ figure("color", figureColor); hold on; box on;colormap('cool');
     elseif strcmpi(threshType,"fluence")
         ylabel("E_{iso} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
     end
-    legend(["synSam sample", "synSam detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend([...
+            "synthetic sample of " + string(synSam.ndata) + " bursts"...
+            , "detection limit at 50% probability of detection"...
+            ,"detection limit comparable to " + citedWorks + " at 99% probability"...
+            %,"Regression line slope = \alpha"...
+            ]...
+            , "interpreter", "tex"...
+            , "location", "southeast"...
+            , "fontSize", fontSize...
+            ,'color',figureColor)
+        
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(synSam.output.path + "/synSam" + threshType + "Zone" + threshTypeInt + ".png", "-m4 -transparent")
 hold off;
@@ -214,6 +265,12 @@ figure("color", figureColor); hold on; box on;colormap('cool');
         , "color", "black" ...
         , "linewidth", lineWidth ...
         );
+    plot( synSam.thresh.zone ...
+        , synSam.corrected.thresh99.yint ...
+        ,"--"...
+        , "color", "black" ...
+        , "linewidth", lineWidth ...
+        );
     
     CBar = colorbar;
     CBar.Label.String = 'Probability of Detection by BATSE LADs';
@@ -227,7 +284,16 @@ figure("color", figureColor); hold on; box on;colormap('cool');
     elseif strcmpi(threshType,"fluence")
         ylabel("E_{0} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
     end
-    legend(["synSam sample", "synSam detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend([...
+            "synthetic sample of " + string(synSam.ndata) + " bursts"...
+            , "detection limit at 50% probability of detection"...
+            , "detection limit comparable to " + citedWorks + " at 99% probability"...
+            ]...
+            , "interpreter", "tex"...
+            , "location", "southeast"...
+            , "fontSize", fontSize...
+            ,'color',figureColor)
+    
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(synSam.output.path + "/synSam" + threshType + "Zone" + threshTypeInt + "Corrected.png", "-m4 -transparent")
 hold off;

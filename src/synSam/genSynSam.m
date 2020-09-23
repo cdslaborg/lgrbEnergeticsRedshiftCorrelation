@@ -16,7 +16,9 @@ function synSam = genSynSam(threshType)
 
     % By default, thresh.val is the threshold at 50% detection probability
     synSam.thresh.logVal = mean( b10.data( b10.data(:,icol.detProb)>0.48 & b10.data(:,icol.detProb)<0.52 , icol.logyobs) );
+    synSam.thresh.logVal99 = mean( b10.data( b10.data(:,icol.detProb)>0.0 & b10.data(:,icol.detProb)<0.02 , icol.logyobs) );
     synSam.thresh.val = exp( synSam.thresh.logVal );
+    synSam.thresh.val99 = exp(synSam.thresh.logVal99);
 
     Mask = b10.data(1:1:end,icol.detProb) > unifrnd(0,1,length(b10.data(1:1:end,icol.detProb)),1);
 
