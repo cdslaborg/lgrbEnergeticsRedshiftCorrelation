@@ -13,9 +13,11 @@ fontSize = 9;
 lineWidth = 1.5;
 figureColor = "white";
 freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+generateAverageMaxAlpha = true;
 
 threshType = "fluence";
 matFileName = "synSam" + threshType + ".mat";
+maxAlphaTauFileName = "averageAlphaAndTauValues" + threshType + ".mat";
 if strcmpi(threshType,"flux")
     threshTypeInt = "Liso";
 elseif strcmpi(threshType,"fluence")
@@ -56,6 +58,23 @@ else
     load(synSam.output.path + "/" + matFileName); % loads synSam object
     
 end
+
+
+
+% generate average alpha and tau values
+if generateAverageMaxAlpha
+    averageValues = averageAlphaAndTau(synSam.thresh.logVal... observerLogThresh at 50% detection probability
+                                       ,synSam.thresh.logVal99... observerLogThresh at 50% detection probability
+                                       ,threshType ... threshType
+                                       ,50); %number of generated samples
+    synSam.output.path = "../../out/synSam";
+    save(synSam.output.path + "/" + maxAlphaTauFileName,"averageValues");
+else
+    synSam.output.path = "../../out/synSam";
+    load(synSam.output.path + "/" + maxAlphaTauFileName);
+end
+
+
 
 % plot tau(alpha = 0) versus threshold
 
@@ -110,6 +129,14 @@ hold off;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% plot alpha (tau = 0) versus threshold
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%alphaStdString = "^{+" + string(round(averageValues.avgAlphaPlusOne-averageValues.avgAlpha,2)) + "}_{-" ...
+%                 + string(round(averageValues.avgAlpha-averageValues.avgAlphaPlusOne,2))+"}";
+alphaStdString =" \pm " + string(round(averageValues.avgAlphaPlusOne-averageValues.avgAlpha,2)) + " ";
+alphaStdString99 =" \pm " + string(round(averageValues.avgAlpha99PlusOne-averageValues.avgAlpha99,2)) + " ";
+             
+%alphaStdString99 = "^{+" + string(round(averageValues.avgAlpha99PlusOne-averageValues.avgAlpha99,2)) + "}_{-" ...
+%                   + string(round(averageValues.avgAlpha99-averageValues.avgAlpha99PlusOne,2))+"}";
+
 
 figure("color", figureColor); hold on; box on;
     plot( exp( synSam.thresh.logRange ) ...
@@ -133,9 +160,9 @@ figure("color", figureColor); hold on; box on;
     end
     legend([p,p1,p2,p3]...
             ,"detection limit at 50%-probability" ...
-            , "\alpha = " + string(round(synSam.estat.logxMax.alpha.tau.zero,2)) + " at detection limit"...
+            , "\alpha = " + string(round(synSam.estat.logxMax.alpha.tau.zero,2)) + alphaStdString + " at detection limit"...
             , "detection limit at 99%-probability (compareable to " + citedWorks + ")"...
-            , "\alpha = " + string(round(synSam.estat99.logxMax.alpha.tau.zero,2)) + " at detection limit comparable to " + citedWorks ...
+            , "\alpha = " + string(round(synSam.estat99.logxMax.alpha.tau.zero,2)) + alphaStdString99 + " at detection limit comparable to " + citedWorks ...
             ,"location"...
             ,"southwest")
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
