@@ -125,7 +125,7 @@ figure; hold on; box on;
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../../out/L19/L19histSbol.png", "-m4 -transparent")
+    %export_fig("../../../out/L19/L19histSbol.png", "-m4 -transparent")
 hold off;
 
 figure; hold on; box on;
@@ -137,7 +137,7 @@ figure; hold on; box on;
     set(gca,'xscale','log','yscale','log');
     set(gcf,'color',figureColor)
     set(gca,'color',figureColor, 'fontSize', fontSize)
-    export_fig("../../../out/L19/L19zoneSbol.png", "-m4 -transparent")
+    %export_fig("../../../out/L19/L19zoneSbol.png", "-m4 -transparent")
 hold off;
 
 
