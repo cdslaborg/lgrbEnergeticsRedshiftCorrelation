@@ -1,1 +1,1 @@
-# lgrbExcessRate
+This repository contains the data and Matlab code used in our paper "How unbiased statistical methods lead to biased scientific discoveries: A case study of the Efron-Petrosian statistic applied to the luminosity-redshift evolution of Gamma-Ray Bursts", by Bryant et al.
