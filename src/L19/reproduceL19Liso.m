@@ -17,10 +17,9 @@ freshRunEnabled = true; % this must be set to true for first ever simulation. Th
 if freshRunEnabled
 
     L19 = struct();
-    %L19.thresh.val = 1.6e-07; % to match threshold line
-    %L19.thresh.val = 2e-06; % value in paper
-    %L19.thresh.val = 7e-10; % to get alpha = 2.30
-    L19.thresh.val = 7.e-7;
+    %L19.thresh.val = 1.6e-07; % 
+    L19.thresh.val = 1.e-10; % 
+    %L19.thresh.val = 7.e-7; % value in paper
     L19.thresh.logVal = log(L19.thresh.val);
 
     L19.input.file.path = "../../in/L19figure1.xlsx";
@@ -76,7 +75,7 @@ if freshRunEnabled
                                     );
     end
 
-    save(L19.output.path + "/L19liso_7e-7.mat","L19");
+    save(L19.output.path + "/L19liso.mat","L19");
 
 else
     
@@ -111,7 +110,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(L19.output.path + "/L19threshTauLiso.png", "-m4 -transparent")
+    %export_fig(L19.output.path + "/L19threshTauLiso.png", "-m4 -transparent")
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -131,7 +130,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(L19.output.path + "/L19threshAlphaLiso.png", "-m4 -transparent")
+    %export_fig(L19.output.path + "/L19threshAlphaLiso.png", "-m4 -transparent")
 hold off;
 
 % plot the original bivariate data for zone-liso
@@ -196,7 +195,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["L19 sample", "L19 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(L19.output.path + "/L19zoneLiso.png", "-m4 -transparent")
+    %export_fig(L19.output.path + "/L19zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
@@ -221,10 +220,5 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["L19 sample", "L19 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(L19.output.path + "/L19zoneLisoCorrected.png", "-m4 -transparent")
+    %export_fig(L19.output.path + "/L19zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
-%{
-figure("color", figureColor); hold on; box on;
-    histogram(L19.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
-hold off;
-%}

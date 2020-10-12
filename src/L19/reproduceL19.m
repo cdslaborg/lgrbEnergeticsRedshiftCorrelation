@@ -17,8 +17,8 @@ freshRunEnabled = false; % this must be set to true for first ever simulation. T
 if freshRunEnabled
 
     L19 = struct();
-    L19.thresh.val = 1.6e-07; % to match threshold line
-    %L19.thresh.val = 2e-06; % value in paper
+    L19.thresh.val = 1.6e-7; % to match threshold line
+    %L19.thresh.val = 2e-6; % value in paper
     %L19.thresh.val = 7e-10; % to get alpha = 2.30
     L19.thresh.logVal = log(L19.thresh.val);
 
@@ -104,9 +104,12 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(L19.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    yline(0,"linewidth", 2, "linestyle", "--", "color", [0, 0.4470, 0.7410]);
     scatter(L19.thresh.val,L19.estat.logxMax.tau,100,'black')
+    scatter(1.1e-6, 0, 100, [0, 0.4470, 0.7410]);
     annotation('textarrow',[.48,.53],[.75,.75],'String','L19 detection threshold','fontsize',11);
     annotation('textarrow',[.48,.53],[.25,.25],'String','\tau = -6.15','fontsize',11);
+    annotation('textarrow',[.755,.725],[.33,.415],'String','flux = 1.1 \times 10^{-6}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Fluence [ ergs / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -214,8 +217,11 @@ figure("color", figureColor); hold on; box on;
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(L19.output.path + "/L19zoneEisoCorrected.png", "-m4 -transparent")
 hold off;
-%{
+
 figure("color", figureColor); hold on; box on;
-    histogram(L19.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
+    h = histogram(L19.logZone,"binwidth",0.1);
+    xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
+    ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
+    set(gca, "color", figureColor);
+    export_fig(L19.output.path + "/L19histLogZone.png", "-m4 -transparent")
 hold off;
-%}

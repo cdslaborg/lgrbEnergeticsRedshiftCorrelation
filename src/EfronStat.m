@@ -126,7 +126,7 @@ classdef EfronStat < dynamicprops
             tauDenominatorSq = 0.;
             for i = 1:self.ndata
                 logxMax.box{i} = struct();
-                logxMax.box{i}.mask = self.logx <= logxMax.val(i) & logyLocal >= logyLocal(i);
+                logxMax.box{i}.mask = self.logx < logxMax.val(i) & logyLocal > logyLocal(i);
                 logxMax.box{i}.count = sum( logxMax.box{i}.mask );
                 logxMax.box{i}.logx = self.logx( logxMax.box{i}.mask ); % vector
                 logxMax.box{i}.logy = logyLocal( logxMax.box{i}.mask ); % vector

@@ -17,6 +17,7 @@ freshRunEnabled = false; % this must be set to true for first ever simulation. T
 if freshRunEnabled
 
     t17 = struct();
+    %t17.thresh.val = 2e-6; % reported value
     %t17.thresh.val = 1.1e-6; % to match graph threshold
     t17.thresh.val = 8.6e-07; % for \alpha = 1.7
     t17.thresh.logVal = log(t17.thresh.val);
@@ -103,9 +104,12 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(t17.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    yline(0,"linewidth", 2, "linestyle", "--", "color", [0, 0.4470, 0.7410]);
     scatter(t17.thresh.val,t17.estat.logxMax.tau,100,'black')
+    scatter(2.35e-6, 0, 100, [0, 0.4470, 0.7410]);
     annotation('textarrow',[.63,.68],[.75,.75],'String','t17 detection threshold','fontsize',11);
     annotation('textarrow',[.63,.68],[.33,.33],'String','\tau = -5.42','fontsize',11);
+    annotation('textarrow',[.67,.77],[.5,.56],'String','flux = 2.35 \times 10^{-6}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -213,8 +217,11 @@ figure("color", figureColor); hold on; box on;
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(t17.output.path + "/t17zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
-%{
+
 figure("color", figureColor); hold on; box on;
-    histogram(t17.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
+    h = histogram(t17.logZone,"binwidth",0.1);
+    xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
+    ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
+    set(gca, "color", figureColor);
+    export_fig(t17.output.path + "/t17histLogZone.png", "-m4 -transparent")
 hold off;
-%}

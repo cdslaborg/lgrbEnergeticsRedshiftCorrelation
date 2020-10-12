@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -86,9 +86,12 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(p16.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
+    yline(0,"linewidth", 2, "linestyle", "--", "color", [0, 0.4470, 0.7410]);
     scatter(p16.thresh.val,-5,100,'black')
+    scatter(4.5e-7, 0, 100, [0, 0.4470, 0.7410]);
     annotation('textarrow',[.45,.5],[.75,.75],'String','p16 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.5],[.3,.3],'String','\tau = -5.0','fontsize',11);
+    annotation('textarrow',[.69,.65],[.475,.555],'String','flux = 4.5 \times 10^{-7}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
@@ -163,7 +166,7 @@ figure("color", figureColor); hold on; box on;
     plot( exp( p16.regression.logZone ) ...
         , exp( p16.regression.logLiso ) ...
         , "--" ...
-        , "color", [0,1,0] ...
+        , "color", [1,0,1] ...
         , "linewidth", 1.5 * lineWidth ...
         );
     xlim(p16.thresh.logZoneLimits);
@@ -198,8 +201,11 @@ figure("color", figureColor); hold on; box on;
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(p16.output.path + "/P16zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
-%{
+
 figure("color", figureColor); hold on; box on;
-    histogram(p16.estat.logyDistanceFromLogThresh,"BinWidth",0.5);
+    h = histogram(p16.logZone,"binwidth",0.1);
+    xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
+    ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
+    set(gca, "color", figureColor);
+    export_fig(p16.output.path + "/P16histLogZone.png", "-m4 -transparent")
 hold off;
-%}
