@@ -107,7 +107,7 @@ figure("color", figureColor); hold on; box on;
     yline(0,"linewidth", 2, "linestyle", "--", "color", [0, 0.4470, 0.7410]);
     scatter(t17.thresh.val,t17.estat.logxMax.tau,100,'black')
     scatter(2.35e-6, 0, 100, [0, 0.4470, 0.7410]);
-    annotation('textarrow',[.63,.68],[.75,.75],'String','t17 detection threshold','fontsize',11);
+    annotation('textarrow',[.63,.68],[.75,.75],'String','T17 detection threshold','fontsize',11);
     annotation('textarrow',[.63,.68],[.33,.33],'String','\tau = -5.42','fontsize',11);
     annotation('textarrow',[.67,.77],[.5,.56],'String','flux = 2.35 \times 10^{-6}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
@@ -126,7 +126,7 @@ figure("color", figureColor); hold on; box on;
         );
     xline(t17.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     scatter(t17.thresh.val, t17.estat.logxMax.alpha.tau.zero, 100, 'black');
-    annotation('textarrow',[.625,.675],[.4,.4],'String','t17 detection threshold','fontsize',11);
+    annotation('textarrow',[.625,.675],[.4,.4],'String','T17 detection threshold','fontsize',11);
     annotation('textarrow',[.625,.675],[.623,.623],'String','\alpha = 1.70','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
@@ -188,7 +188,7 @@ figure("color", figureColor); hold on; box on;
     xlim(t17.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["t17 sample", "t17 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["T17 sample", "T17 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(t17.output.path + "/t17zoneLiso.png", "-m4 -transparent")
 hold off;
@@ -213,7 +213,7 @@ figure("color", figureColor); hold on; box on;
     xlim(t17.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["t17 sample", "t17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(t17.output.path + "/t17zoneLisoCorrected.png", "-m4 -transparent")
 hold off;

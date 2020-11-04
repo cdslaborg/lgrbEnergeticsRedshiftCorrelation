@@ -89,7 +89,7 @@ figure("color", figureColor); hold on; box on;
     yline(0,"linewidth", 2, "linestyle", "--", "color", [0, 0.4470, 0.7410]);
     scatter(p16.thresh.val,-5,100,'black')
     scatter(4.5e-7, 0, 100, [0, 0.4470, 0.7410]);
-    annotation('textarrow',[.45,.5],[.75,.75],'String','p16 detection threshold','fontsize',11);
+    annotation('textarrow',[.45,.5],[.75,.75],'String','P16 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.5],[.3,.3],'String','\tau = -5.0','fontsize',11);
     annotation('textarrow',[.69,.65],[.475,.555],'String','flux = 4.5 \times 10^{-7}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
@@ -108,7 +108,7 @@ figure("color", figureColor); hold on; box on;
         );
     xline(p16.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     scatter(p16.thresh.val, p16.estat.logxMax.alpha.tau.zero, 100, 'black');
-    annotation('textarrow',[.59,.54],[.85,.85],'String','p16 detection threshold','fontsize',11);
+    annotation('textarrow',[.59,.54],[.85,.85],'String','P16 detection threshold','fontsize',11);
     annotation('textarrow',[.59,.54],[.728,.728],'String','\alpha = 2.53','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
@@ -172,7 +172,7 @@ figure("color", figureColor); hold on; box on;
     xlim(p16.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["p16 sample", "p16 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["P16 sample", "P16 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(p16.output.path + "/P16zoneLiso.png", "-m4 -transparent")
 hold off;
@@ -197,7 +197,7 @@ figure("color", figureColor); hold on; box on;
     xlim(p16.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
-    legend(["p16 sample", "p16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+    legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
     export_fig(p16.output.path + "/P16zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
