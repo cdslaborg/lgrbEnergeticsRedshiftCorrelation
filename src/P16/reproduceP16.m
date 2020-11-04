@@ -29,7 +29,7 @@ if freshRunEnabled
     p16.output.path = "../../out/P16"; if ~isfolder(p16.output.path); mkdir(p16.output.path); end
     p16.zone = p16.input.file.contents.sorted(:,2) + 1;
     p16.liso = p16.input.file.contents.sorted(:,4);
-    p16.logZone = log(p16.zone);
+    p16.lologZone = log(p16.zone);
     p16.logLiso = log(p16.liso);
 
     logxMaxAlphaSearchStart = 2;

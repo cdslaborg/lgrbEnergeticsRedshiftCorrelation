@@ -94,7 +94,7 @@ verticalDistanceFromThreshLine = logLiso - getLogThreshLim(logZone,threshLim) + 
 figure; hold on; box on;
     h = histogram(verticalDistanceFromThreshLine/log(10),"binwidth",0.25);
     line([LOG_THRESH_LIM/log(10), LOG_THRESH_LIM/log(10)], [0, 50],'color','black','linewidth',2,'linestyle','--')
-    legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "fontSize", fontSize-2,'color',figureColor)
+    legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "fontSize", fontSize-2,'color',figureColor)
     xlabel("log10( Flux [ ergs / s / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize-2)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize-2)
     set(gcf,'color',figureColor)
@@ -105,7 +105,7 @@ hold off;
 figure; hold on; box on;
     plot(exp(logZone),exp(verticalDistanceFromThreshLine),'.-','markersize',10); set(gca,'xscale','log','yscale','linear');
     line([zoneLim(1), zoneLim(2)],[threshLim, threshLim],'color','black','linewidth',2,'linestyle','--')
-    legend(["P16 sample", "P16 detection limit"], "fontSize", fontSize,'color',figureColor)
+    legend(["T17 sample", "T17 detection limit"], "fontSize", fontSize,'color',figureColor)
     xlabel("z + 1", "interpreter", "tex", "fontSize", fontSize)
     ylabel("Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontSize", fontSize)
     xlim(zoneLim)
