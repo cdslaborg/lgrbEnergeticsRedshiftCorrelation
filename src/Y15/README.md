@@ -1,1 +1,0 @@
-This folder contains the reproduction of the results of Yu et al. (2015).
