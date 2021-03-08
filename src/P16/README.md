@@ -1,1 +1,0 @@
-This folder contains the reproduction of the results of Pescali et al. (2016).
