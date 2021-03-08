@@ -1,1 +1,0 @@
-This folder contains the reproduction of the results of Lloyd-Ronning et al. (2019).
