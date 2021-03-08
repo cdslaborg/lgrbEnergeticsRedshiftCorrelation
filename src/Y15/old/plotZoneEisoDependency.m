@@ -57,7 +57,7 @@ figure; hold on; box on;
     
     xlabel("\alpha in L_{iso} / (z + 1)^\alpha", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron - Petrosian Statistic", "interpreter", "tex", "fontsize", fontSize);
-    export_fig("../../../out/Y15/Y15taualpha.png", "-m2 -transparent")
+    %export_fig("../../../out/Y15/Y15taualpha.png", "-m2 -transparent")
     
 hold off;
 

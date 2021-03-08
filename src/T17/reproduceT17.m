@@ -75,12 +75,12 @@ if freshRunEnabled
                                     );
     end
 
-    save(t17.output.path + "/t17.mat","t17");
+    save(t17.output.path + "/t17_old.mat","t17");
 
 else
     
     t17.output.path = "../../out/t17";
-    load(t17.output.path + "/t17.mat"); % loads t17 object
+    load(t17.output.path + "/t17_old.mat"); % loads t17 object
     
 end
 
@@ -113,7 +113,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(t17.output.path + "/t17threshTau.png", "-m4 -transparent")
+    %export_fig(t17.output.path + "/t17threshTau.png", "-m4 -transparent")
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -131,7 +131,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(t17.output.path + "/t17threshAlpha.png", "-m4 -transparent")
+    %export_fig(t17.output.path + "/t17threshAlpha.png", "-m4 -transparent")
 hold off;
 
 % plot the original bivariate data for zone-liso
@@ -190,7 +190,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["T17 sample", "T17 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(t17.output.path + "/t17zoneLiso.png", "-m4 -transparent")
+    %export_fig(t17.output.path + "/t17zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
@@ -215,7 +215,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["T17 sample", "T17 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(t17.output.path + "/t17zoneLisoCorrected.png", "-m4 -transparent")
+    %export_fig(t17.output.path + "/t17zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
 
 figure("color", figureColor); hold on; box on;
@@ -223,5 +223,5 @@ figure("color", figureColor); hold on; box on;
     xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
     set(gca, "color", figureColor);
-    export_fig(t17.output.path + "/t17histLogZone.png", "-m4 -transparent")
+    %export_fig(t17.output.path + "/t17histLogZone.png", "-m4 -transparent")
 hold off;

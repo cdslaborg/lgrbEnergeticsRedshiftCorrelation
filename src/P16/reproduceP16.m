@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -29,7 +29,7 @@ if freshRunEnabled
     p16.output.path = "../../out/P16"; if ~isfolder(p16.output.path); mkdir(p16.output.path); end
     p16.zone = p16.input.file.contents.sorted(:,2) + 1;
     p16.liso = p16.input.file.contents.sorted(:,4);
-    p16.lologZone = log(p16.zone);
+    p16.logZone = log(p16.zone);
     p16.logLiso = log(p16.liso);
 
     logxMaxAlphaSearchStart = 2;
@@ -95,7 +95,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(p16.output.path + "/P16threshTau.png", "-m4 -transparent")
+    %export_fig(p16.output.path + "/P16threshTau.png", "-m4 -transparent")
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -113,7 +113,7 @@ figure("color", figureColor); hold on; box on;
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(p16.output.path + "/P16threshAlpha.png", "-m4 -transparent")
+    %export_fig(p16.output.path + "/P16threshAlpha.png", "-m4 -transparent")
 hold off;
 
 
@@ -174,7 +174,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["P16 sample", "P16 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(p16.output.path + "/P16zoneLiso.png", "-m4 -transparent")
+    %export_fig(p16.output.path + "/P16zoneLiso.png", "-m4 -transparent")
 hold off;
 
 
@@ -199,7 +199,7 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["P16 sample", "P16 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(p16.output.path + "/P16zoneLisoCorrected.png", "-m4 -transparent")
+    %export_fig(p16.output.path + "/P16zoneLisoCorrected.png", "-m4 -transparent")
 hold off;
 
 figure("color", figureColor); hold on; box on;
@@ -207,5 +207,5 @@ figure("color", figureColor); hold on; box on;
     xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
     set(gca, "color", figureColor);
-    export_fig(p16.output.path + "/P16histLogZone.png", "-m4 -transparent")
+    %export_fig(p16.output.path + "/P16histLogZone.png", "-m4 -transparent")
 hold off;

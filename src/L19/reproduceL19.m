@@ -12,7 +12,7 @@ addpath(genpath("../"),"-begin");
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
-freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+freshRunEnabled = true; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
 
 if freshRunEnabled
 
@@ -37,13 +37,27 @@ if freshRunEnabled
                             , "fluence" ... threshType
                             );
 
-    L19.logPbol = L19.estat.logyDistanceFromLogThresh + L19.thresh.logVal;
+    %L19.logSbol = L19.estat.logyDistanceFromLogThresh + L19.thresh.logVal;
+    L19.logSbol = L19.logEiso - getLogEisoLumDisTerm(L19.zone);
+    
+    % uncomment to trial-run the histogram only
+    
+    figure("color", figureColor); hold on; box on;
+        h = histogram(L19.logSbol/log(10),"binwidth",0.5);
+        line([log(L19.thresh.val)/log(10),log(L19.thresh.val)/log(10)], [0, 100],'color','black','linewidth',2,'linestyle','--');
+        xlabel("log_{10}( Fluence [ ergs / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize);
+        ylabel("Count", "interpreter", "tex", "fontSize", fontSize);
+        legend(["L19 sample", "L19 detection limit"], "interpreter", "tex", "fontSize", fontSize,'color',figureColor); 
+    hold off;
+    return
+    
     L19.thresh.logMin = log(1.e-9);
     L19.thresh.logMax = log(1.e-5);
     L19.thresh.logRange = L19.thresh.logMin:0.2:L19.thresh.logMax;
     L19.thresh.logRangeLen = length(L19.thresh.logRange);
     L19.estatList = cell(L19.thresh.logRangeLen,1);
-    %new
+    
+    % uncomment to trial-run graph of zone-Eiso only
     %{
     L19.estat.logxMax.alpha.tau.zero
     L19.thresh.logZoneLimits = [1,12];

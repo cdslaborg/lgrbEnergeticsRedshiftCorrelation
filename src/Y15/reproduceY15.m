@@ -13,11 +13,14 @@ fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
 freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+histogramTrialRun = false; % trial-run the histogram only. "freshRunEnabled" must be true.
+saveNewImages = false; % export figure on or off
 
 if freshRunEnabled
 
     y15 = struct();
-    y15.thresh.val = 2.e-8;
+    y15.thresh.val = 2.e-8; % original value
+    %y15.thresh.val = 2.5e-7; % improved value
     y15.thresh.logVal = log(y15.thresh.val);
 
     y15.input.file.path = "../../in/Y15table1.xlsx";
@@ -28,14 +31,28 @@ if freshRunEnabled
     y15.liso = y15.input.file.contents.sorted(:,4);
     y15.logZone = log(y15.zone);
     y15.logLiso = log(y15.liso);
-
+    y15.logPbol = y15.logLiso - getLogLisoLumDisTerm(y15.zone);
+    
+    if histogramTrialRun
+        % trial-run the histogram only
+        figure("color", figureColor); hold on; box on;
+            h = histogram(y15.logPbol/log(10),"binwidth",0.25);
+            line([log(y15.thresh.val)/log(10),log(y15.thresh.val)/log(10)], [0, 30],'color','black','linewidth',2,'linestyle','--');
+            xlabel("log_{10}( Flux [ ergs / s / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize);
+            ylabel("Count", "interpreter", "tex", "fontSize", fontSize);
+            legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "fontSize", fontSize,'color',figureColor); 
+        hold off;
+        return
+    end
+    
     y15.estat = EfronStat   ( y15.logZone ... logx
                             , y15.logLiso ... logy
                             , y15.thresh.logVal ... observerLogThresh
                             , "flux" ... threshType
                             );
 
-    y15.logPbol = y15.estat.logyDistanceFromLogThresh + y15.thresh.logVal;
+    %y15.logPbol = y15.estat.logyDistanceFromLogThresh + y15.thresh.logVal;
+    
     y15.thresh.logMin = log(1.e-9);
     y15.thresh.logMax = log(1.e-5);
     y15.thresh.logRange = y15.thresh.logMin:0.2:y15.thresh.logMax;
@@ -83,11 +100,15 @@ figure("color", figureColor); hold on; box on;
     scatter(2.0e-7, 0, 100, [0, 0.4470, 0.7410]);
     annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.4],[.25,.25],'String','\tau = -5.18','fontsize',11);
+    %annotation('textarrow',[.52,.57],[.85,.85],'String','Y15 hypothetical threshold','fontsize',11);
+    %annotation('textarrow',[.67,.62],[.53,.53],'String','\tau = 1.04','fontsize',11);
     annotation('textarrow',[.64,.59],[.41,.46],'String','flux = 2.0 \times 10^{-7}','interpreter', 'tex','fontsize',11);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(y15.output.path + "/Y15threshTau.png", "-m4 -transparent")
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15threshTau.png", "-m4 -transparent");
+    end
 hold off;
 
 % plot alpha (tau = 0) versus threshold
@@ -99,16 +120,19 @@ figure("color", figureColor); hold on; box on;
         , "linewidth", lineWidth ...
         );
     xline(y15.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
-    %yline(0,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     scatter(y15.thresh.val, y15.estat.logxMax.alpha.tau.zero, 100, 'black');
-    %scatter(2.214e-7, 0, 100, [1,0,1]);
     annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
     annotation('textarrow',[.45,.4],[.775,.775],'String','\alpha = 2.04','fontsize',11);
-    %annotation('textarrow',[.65,.6],[.515,.465],'String','flux = 2.214e-7','fontsize',11);
+    %annotation('textarrow',[.52,.57],[.885,.885],'String','Y15 hypothetical threshold','fontsize',11);
+    %annotation('textarrow',[.67,.62],[.397,.397],'String','\alpha = -0.30','fontsize',11);
+    %yline(y15.estat.logxMax.alpha.tau.posOne,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
+    %yline(y15.estat.logxMax.alpha.tau.negOne,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
     set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
-    export_fig(y15.output.path + "/Y15threshAlpha.png", "-m4 -transparent")
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15threshAlpha.png", "-m4 -transparent");
+    end
 hold off;
 
 
@@ -169,18 +193,17 @@ figure("color", figureColor); hold on; box on;
     scatter(2.77,2.9e51,75,'black')
     text(2,1.e55,'N_{i}','fontsize',13);
     annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
-    %yline(4.5e54,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     xlim(y15.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
     ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["Y15 sample", "Y15 detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(y15.output.path + "/Y15zoneLiso.png", "-m4 -transparent")
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15zoneLiso.png", "-m4 -transparent");
+    end
 hold off;
 
-
 % Now build the decorrelated data and plot the redshift-corrected bivariate data for zone-liso
-
 
 figure("color", figureColor); hold on; box on;
     plot( y15.zone ...
@@ -200,13 +223,53 @@ figure("color", figureColor); hold on; box on;
     ylabel("L_{0} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
     legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
     set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
-    export_fig(y15.output.path + "/Y15zoneLisoCorrected.png", "-m4 -transparent")
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15zoneLisoCorrected.png", "-m4 -transparent");
+    end
 hold off;
 
+% Plot the data set zone-Pbol
+
+figure("color", figureColor); hold on; box on;
+    plot( y15.zone ...
+        , exp(y15.logPbol) ...
+        , "." ...
+        ,"markersize", 15 ...
+        , "linewidth", lineWidth ...
+        );
+    line([y15.thresh.logZoneLimits(1),y15.thresh.logZoneLimits(2)],[y15.thresh.val,y15.thresh.val],'color','black','linewidth',1,'linestyle','--');
+    xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
+    ylabel("Flux [ ergs / s / cm^2]", "interpreter", "tex", "fontsize", fontSize);
+    legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "location", "northeast", "fontSize", fontSize,'color',figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15zoneSbol_new.png", "-m4 -transparent");
+    end
+hold off;
+
+% Plot a histogram of Pbol
+
+figure("color", figureColor); hold on; box on;
+    h = histogram(y15.logPbol/log(10),"binwidth",0.25);
+    line([log(y15.thresh.val)/log(10),log(y15.thresh.val)/log(10)], [0, 30],'color','black','linewidth',2,'linestyle','--');
+    xlabel("log_{10}( Flux [ ergs / s / cm^2 ] )", "interpreter", "tex", "fontSize", fontSize);
+    ylabel("Count", "interpreter", "tex", "fontSize", fontSize);
+    legend(["Y15 sample", "Y15 detection limit"], "interpreter", "tex", "fontSize", fontSize,'color',figureColor);
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15histSbol_new.png", "-m4 -transparent");
+    end
+hold off;
+
+% Plot a histogram of zone
+%{
 figure("color", figureColor); hold on; box on;
     h = histogram(y15.logZone,"binwidth",0.1);
     xlabel("log10( z + 1 )", "interpreter", "tex", "fontSize", fontSize)
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize)
     set(gca, "color", figureColor);
-    export_fig(y15.output.path + "/Y15histLogZone.png", "-m4 -transparent")
+    if saveNewImages
+        export_fig(y15.output.path + "/Y15histLogZone.png", "-m4
+        -transparent");
+    end
 hold off;
+%}
