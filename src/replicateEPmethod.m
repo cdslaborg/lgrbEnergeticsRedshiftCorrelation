@@ -3,28 +3,32 @@ close all;
 filePath = mfilename('fullpath');
 [currentDir,fileName,fileExt] = fileparts(filePath); cd(currentDir);
 cd(fileparts(mfilename('fullpath'))); % Change working directory to source code directory.
-%addpath(genpath("../../../libmatlab"),"-begin");
+addpath(genpath("../../../libmatlab"),"-begin");
+
+% Simulation Options
+freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
+lisoEisoTrialRun = false; % trial-run the lisoEiso-zone graph only. "freshRunEnabled" must be true.
+histogramTrialRun = false; % trial-run the histogram only. "freshRunEnabled" must be true.
+giveAlphaOnly = false; % only return the alpha for the given threshold value. "freshRunEnabled" must be true.
+saveNewImages = false; % export figure on or off. Must have export_fig installed.
+logxMaxAlphaSearchStart = 2; % Starting alpha value for search. DO NOT set to zero. "freshRunEnabled" must be true. 2 is default. -0.5 for L19 Liso.
+
+% Dataset Choice
+dataset = "Y15"; % choose between "Y15", "P16", "T17", and "L19"
+convertEisoToLiso = false; % FOR L19 ONLY to convert Eiso values to Liso via the L19 equation
 
 % Figure Parameters
 fontSize = 13;
 lineWidth = 1.5;
 figureColor = "white";
 
-% Simulation Options
-freshRunEnabled = false; % this must be set to true for first ever simulation. Thereafter, it can be set to false to save time.
-histogramTrialRun = false; % trial-run the histogram only. "freshRunEnabled" must be true.
-saveNewImages = false; % export figure on or off
-logxMaxAlphaSearchStart = 2; % Starting alpha value for search. DO NOT set to zero. "freshRunEnabled" must be true. 2 is default. -0.5 for L19 Liso.
-
-% Dataset Choice
-dataset = "Y15"; % choose between "Y15", "P16", "T17", and "L19"
-convertEisoToLiso = false; % FOR L19 ONLY to convert Eiso values to Liso via their equation
-
+% Begin code
 if freshRunEnabled
     sim = struct();
     if strcmpi(dataset,"Y15")
         sim.type = "flux";
-        sim.thresh.val = 2.e-8; % value in sim paper
+        sim.thresh.val = 2.e-8; % value in Y15 paper
+        %sim.thresh.val = 2.5e-7; % improved value
         sim.thresh.logVal = log(sim.thresh.val);
         sim.input.file.path = "../in/Y15table1.xlsx";
         sim.input.file.contents = importdata(sim.input.file.path);
@@ -36,7 +40,7 @@ if freshRunEnabled
         sim.logPbolSbol = sim.logLisoEiso - getLogLisoLumDisTerm(sim.zone);
     elseif strcmpi(dataset,"P16")
         sim.type = "flux";
-        sim.thresh.val = 1.e-07;
+        sim.thresh.val = 8.1e-08; % to match alpha = 2.5 value in paper
         %sim.thresh.val = 2.0704e-07; % for Ep = 140
         %sim.thresh.val = 2.2878e-07; % for Ep = 362
         %sim.thresh.val = 2.3433e-07; % for Ep = 574
@@ -53,7 +57,7 @@ if freshRunEnabled
         sim.type = "flux";
         %sim.thresh.val = 2e-6; % value in P16 paper
         %sim.thresh.val = 1.1e-6; % value to match P16 graph visually
-        sim.thresh.val = 8.6e-07; % for \alpha = 1.7
+        sim.thresh.val = 7.95e-07; % to match alpha = 1.7 value in paper
         sim.thresh.logVal = log(sim.thresh.val);
         sim.input.file.path = "../in/T17table4_3.txt";
         sim.input.file.contents = importdata(sim.input.file.path,' ',47);
@@ -67,8 +71,8 @@ if freshRunEnabled
         if ~convertEisoToLiso
             sim.type = "fluence";
             %sim.thresh.val = 2e-6; % value in L19 paper
-            %sim.thresh.val = 7e-10; % value to get \alpha = 2.30
-            sim.thresh.val = 1.6e-7; % value to match T17 graph visually
+            %sim.thresh.val = 1.6e-10; % value to get \alpha = 2.30
+            sim.thresh.val = 1.6e-7; % value to match L19 graph visually
             sim.thresh.logVal = log(sim.thresh.val);
             sim.input.file.path = "../in/L19figure1.xlsx";
             sim.input.file.contents = importdata(sim.input.file.path);
@@ -98,6 +102,42 @@ if freshRunEnabled
         error("Dataset must be Y15, P16, T17, or L19");
     end
     
+    % trial run the lisoEiso-zone graph only
+    if lisoEisoTrialRun
+        sim.thresh.logZoneLimits = [1,12];
+        sim.thresh.logZone = log(sim.thresh.logZoneLimits(1)):0.02:log(sim.thresh.logZoneLimits(2)); % the range of z+1 for which the detection threshold will be drawn.
+        sim.thresh.zone = exp(sim.thresh.logZone);
+        if strcmpi(sim.type,"flux")
+            sim.thresh.logLisoEiso = sim.thresh.logVal + getLogLisoLumDisTerm(sim.thresh.zone);
+        elseif strcmpi(sim.type,"fluence")
+            sim.thresh.logLisoEiso = sim.thresh.logVal + getLogEisoLumDisTerm(sim.thresh.zone);
+        end
+        sim.thresh.lisoEiso = exp(sim.thresh.logLisoEiso);
+        figure("color", figureColor); hold on; box on;
+            plot( sim.zone ...
+                , sim.lisoEiso ...
+                , "." ...
+                , "markersize", 15 ...
+                , "linewidth", lineWidth ...
+                );
+            plot( sim.thresh.zone ...
+                , sim.thresh.lisoEiso ...
+                , "color", "black" ...
+                , "linewidth", lineWidth ...
+                );
+            xlim(sim.thresh.logZoneLimits);
+            xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
+            if strcmpi(sim.type,"flux")
+                ylabel("L_{iso} [ ergs / s ]", "interpreter", "tex", "fontsize", fontSize);
+            elseif strcmpi(sim.type,"fluence")
+                ylabel("E_{iso} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
+            end
+            legend([dataset + " sample", dataset + " detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
+            set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+        hold off;
+        return
+    end
+    
     % trial-run the histogram only
     if histogramTrialRun
         figure("color", figureColor); hold on; box on;
@@ -123,6 +163,15 @@ if freshRunEnabled
                             , sim.type ... threshType
                             , logxMaxAlphaSearchStart ...
                             );
+    
+    % give Alpha only
+    if giveAlphaOnly
+        disp("Alpha = " + string(sim.estat.logxMax.alpha.tau.zero + " (+" ...
+            + string(sim.estat.logxMax.alpha.tau.posOne-sim.estat.logxMax.alpha.tau.zero) + ", -" ...
+            + string(sim.estat.logxMax.alpha.tau.zero-sim.estat.logxMax.alpha.tau.negOne) + ")"));
+        return
+    end
+    
     sim.thresh.logMin = log(1.e-9);
     sim.thresh.logMax = log(1.e-5);
     sim.thresh.logRange = sim.thresh.logMin:0.2:sim.thresh.logMax;
@@ -143,7 +192,7 @@ if freshRunEnabled
     elseif strcmpi(dataset,"L19") && convertEisoToLiso
         save(sim.output.path + "/" + dataset + "Liso.mat","sim");
     end
-else
+else % if freshRunEnabled = false
     sim.output.path = "../out/" + dataset;
     if ~strcmpi(dataset,"L19")
         load(sim.output.path + "/" + dataset + ".mat"); % loads object
@@ -156,7 +205,7 @@ else
     end
 end
 
-% plot tau (alpha = 0) versus threshold
+% Figure 1: plot tau (alpha = 0) versus threshold
 
 sim.tauAtAlphaZero = zeros(sim.thresh.logRangeLen,1);
 sim.alphaAtTauZero = zeros(sim.thresh.logRangeLen,1);
@@ -187,13 +236,13 @@ figure("color", figureColor); hold on; box on;
         annotation('textarrow',[.64,.59],[.41,.46],'String','flux = 2.0 \times 10^{-7}','interpreter', 'tex','fontsize',11);
     elseif strcmpi(dataset,"P16")
         scatter(3.94e-7, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.45,.5],[.75,.75],'String','P16 detection threshold','fontsize',11);
-        annotation('textarrow',[.45,.5],[.315,.315],'String','\tau = -4.69','fontsize',11);
+        annotation('textarrow',[.42,.47],[.75,.75],'String','P16 detection threshold','fontsize',11);
+        annotation('textarrow',[.42,.47],[.3,.3],'String','\tau = -4.99','fontsize',11);
         annotation('textarrow',[.68,.64],[.475,.555],'String','flux = 3.94 \times 10^{-7}','interpreter', 'tex','fontsize',11);
     elseif strcmpi(dataset,"T17")
         scatter(2.12e-6, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.63,.68],[.75,.75],'String','T17 detection threshold','fontsize',11);
-        annotation('textarrow',[.63,.68],[.32,.32],'String','\tau = -5.11','fontsize',11);
+        annotation('textarrow',[.62,.67],[.75,.75],'String','T17 detection threshold','fontsize',11);
+        annotation('textarrow',[.62,.67],[.305,.305],'String','\tau = -5.46','fontsize',11);
         annotation('textarrow',[.65,.75],[.45,.51],'String','flux = 2.12 \times 10^{-6}','interpreter', 'tex','fontsize',11);
     elseif strcmpi(dataset,"L19") && ~convertEisoToLiso
         scatter(1.04e-6, 0, 100, [0, 0.4470, 0.7410]);
@@ -224,7 +273,7 @@ figure("color", figureColor); hold on; box on;
     end
 hold off;
 
-% plot alpha (tau = 0) versus threshold
+% Figure 2: plot alpha (tau = 0) versus threshold
 
 figure("color", figureColor); hold on; box on;
     plot( exp( sim.thresh.logRange ) ...
@@ -243,10 +292,10 @@ figure("color", figureColor); hold on; box on;
         %yline(sim.estat.logxMax.alpha.tau.negOne,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     elseif strcmpi(dataset,"P16")
         annotation('textarrow',[.59,.54],[.85,.85],'String','P16 detection threshold','fontsize',11);
-        annotation('textarrow',[.59,.54],[.705,.705],'String','\alpha = 2.35','fontsize',11);
+        annotation('textarrow',[.59,.54],[.725,.725],'String','\alpha = 2.50','fontsize',11);
     elseif strcmpi(dataset,"T17")
         annotation('textarrow',[.625,.675],[.4,.4],'String','T17 detection threshold','fontsize',11);
-        annotation('textarrow',[.625,.675],[.605,.605],'String','\alpha = 1.60','fontsize',11);
+        annotation('textarrow',[.615,.665],[.62,.62],'String','\alpha = 1.70','fontsize',11);
     elseif strcmpi(dataset,"L19") && ~convertEisoToLiso
         annotation('textarrow',[.48,.53],[.4,.4],'String','L19 detection threshold','fontsize',11);
         annotation('textarrow',[.48,.53],[.715,.715],'String','\alpha = 1.31','fontsize',11);
@@ -271,7 +320,7 @@ figure("color", figureColor); hold on; box on;
     end
 hold off;
 
-% plot the original bivariate data for zone-lisoEiso
+% Figure 3: plot the original bivariate data for zone-lisoEiso
 
 sim.thresh.logZoneLimits = [1,12];
 sim.thresh.logZone = log(sim.thresh.logZoneLimits(1)):0.02:log(sim.thresh.logZoneLimits(2)); % the range of z+1 for which the detection threshold will be drawn.
@@ -344,7 +393,7 @@ figure("color", figureColor); hold on; box on;
     end
 hold off;
 
-% Now build the decorrelated data and plot the redshift-corrected bivariate data for zone-lisoEiso
+% Figure 4: build the decorrelated data and plot the redshift-corrected bivariate data for zone-lisoEiso
 
 sim.corrected.logLisoEiso = sim.logLisoEiso(:) - sim.getZcorrection( sim.logZone(:) );
 sim.corrected.lisoEiso = exp(sim.corrected.logLisoEiso);
@@ -382,7 +431,7 @@ figure("color", figureColor); hold on; box on;
     end
 hold off;
 
-% Plot the data set zone-PbolSbol
+% Figure 5: Plot the data set zone-PbolSbol
 
 figure("color", figureColor); hold on; box on;
     plot( sim.zone ...
@@ -410,7 +459,7 @@ figure("color", figureColor); hold on; box on;
     end
 hold off;
 
-% Plot a histogram of PbolSbol
+% Figure 6: Plot a histogram of PbolSbol
 
 figure("color", figureColor); hold on; box on;
     h = histogram(sim.logPbolSbol/log(10),"binwidth",0.25);

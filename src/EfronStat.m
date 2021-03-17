@@ -44,9 +44,9 @@ classdef EfronStat < dynamicprops
                         );
             end
 
-            self.logx = logx;
-            self.logy = logy;
-            self.thresh = Thresh(observerLogThresh, threshType);
+            self.logx = logx; % vector
+            self.logy = logy; % vector
+            self.thresh = Thresh(observerLogThresh, threshType); % scalar
 
             % compute the logxMax values
 
@@ -119,7 +119,6 @@ classdef EfronStat < dynamicprops
 
             logxMax = struct();
             logxMax.val = self.logxMaxValues; % self.getLogxMaxAtThresh(); % vector of size (ndata,1) containing maximum x value at the detection threshold
-            %logxMax.val = self.getLogxMaxAtThresh();
             logxMax.box = cell(self.ndata,1);
 
             tauNumerator = 0.;
