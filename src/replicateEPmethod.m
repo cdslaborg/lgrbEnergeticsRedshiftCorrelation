@@ -18,7 +18,7 @@ dataset = "Y15"; % choose between "Y15", "P16", "T17", and "L19"
 convertEisoToLiso = false; % FOR L19 ONLY to convert Eiso values to Liso via the L19 equation
 
 % Figure Parameters
-fontSize = 13;
+fontSize = 16;
 lineWidth = 1.5;
 figureColor = "white";
 
@@ -229,26 +229,26 @@ figure("color", figureColor); hold on; box on;
     scatter(sim.thresh.val,sim.estat.logxMax.tau,100,'black');
     if strcmpi(dataset,"Y15")
         scatter(2.0e-7, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
-        annotation('textarrow',[.45,.4],[.25,.25],'String','\tau = -5.18','fontsize',11);
-        %annotation('textarrow',[.52,.57],[.85,.85],'String','sim hypothetical threshold','fontsize',11);
-        %annotation('textarrow',[.67,.62],[.53,.53],'String','\tau = 1.04','fontsize',11);
-        annotation('textarrow',[.64,.59],[.41,.46],'String','flux = 2.0 \times 10^{-7}','interpreter', 'tex','fontsize',11);
+        annotation('textarrow',[.46,.41],[.885,.885],'String','Y15 detection threshold','fontsize',fontSize-1);
+        annotation('textarrow',[.46,.41],[.205,.205],'String','\tau = -5.18','fontsize',fontSize-1);
+        %annotation('textarrow',[.52,.57],[.85,.85],'String','sim hypothetical threshold','fontsize',fontSize-1);
+        %annotation('textarrow',[.67,.62],[.53,.53],'String','\tau = 1.04','fontsize',fontSize-1);
+        annotation('textarrow',[.625,.585],[.35,.42],'String','flux = 2.0 \times 10^{-7}','interpreter', 'tex','fontsize',fontSize-1);
     elseif strcmpi(dataset,"P16")
         scatter(3.94e-7, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.42,.47],[.75,.75],'String','P16 detection threshold','fontsize',11);
-        annotation('textarrow',[.42,.47],[.3,.3],'String','\tau = -4.99','fontsize',11);
-        annotation('textarrow',[.68,.64],[.475,.555],'String','flux = 3.94 \times 10^{-7}','interpreter', 'tex','fontsize',11);
+        annotation('textarrow',[.42,.47],[.75,.75],'String',{['P16 detection'], ['threshold']},'fontsize',fontSize-1,'HorizontalAlignment','center');
+        annotation('textarrow',[.42,.47],[.315,.315],'String','\tau = -4.99','fontsize',fontSize-1);
+        annotation('textarrow',[.68,.64],[.475,.56],'String',{['flux ='],['3.94 \times 10^{-7}']},'interpreter','tex','fontsize',fontSize-1,'HorizontalAlignment','left');
     elseif strcmpi(dataset,"T17")
         scatter(2.12e-6, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.62,.67],[.75,.75],'String','T17 detection threshold','fontsize',11);
-        annotation('textarrow',[.62,.67],[.305,.305],'String','\tau = -5.46','fontsize',11);
-        annotation('textarrow',[.65,.75],[.45,.51],'String','flux = 2.12 \times 10^{-6}','interpreter', 'tex','fontsize',11);
+        annotation('textarrow',[.615,.665],[.75,.75],'String','T17 detection threshold','fontsize',fontSize-1);
+        annotation('textarrow',[.615,.665],[.325,.325],'String','\tau = -5.46','fontsize',fontSize-1);
+        annotation('textarrow',[.65,.75],[.45,.51],'String','flux = 2.12 \times 10^{-6}','interpreter', 'tex','fontsize',fontSize-1);
     elseif strcmpi(dataset,"L19") && ~convertEisoToLiso
         scatter(1.04e-6, 0, 100, [0, 0.4470, 0.7410]);
-        annotation('textarrow',[.48,.53],[.75,.75],'String','L19 detection threshold','fontsize',11);
-        annotation('textarrow',[.48,.53],[.255,.255],'String','\tau = -6.01','fontsize',11);
-        annotation('textarrow',[.755,.725],[.33,.415],'String','flux = 1.04 \times 10^{-6}','interpreter', 'tex','fontsize',11);
+        annotation('textarrow',[.48,.53],[.75,.75],'String',{['L19 detection'],['threshold']},'fontsize',fontSize-1,'HorizontalAlignment','center');
+        annotation('textarrow',[.48,.53],[.275,.275],'String','\tau = -6.01','fontsize',fontSize-1);
+        annotation('textarrow',[.755,.725],[.33,.415],'String','flux = 1.04 \times 10^{-6}','interpreter', 'tex','fontsize',fontSize-1);
     elseif strcmpi(dataset,"L19") && convertEisoToLiso
     else
         error("Dataset must be Y15, P16, T17, or L19 for tau (alpha = 0) vs threshold");
@@ -261,7 +261,7 @@ figure("color", figureColor); hold on; box on;
         error("sim.type must be 'flux' or 'fluence'");
     end
     ylabel("Efron-Petrosian Tau Statistic \tau at \alpha = 0", "interpreter", "tex", "fontsize", fontSize);
-    set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if ~strcmpi(dataset,"L19")
             export_fig(sim.output.path + "/" + dataset + "threshTau.png", "-m4 -transparent");
@@ -284,21 +284,21 @@ figure("color", figureColor); hold on; box on;
     xline(sim.thresh.val,"linewidth", 2, "linestyle", "--", "color", [0,0,0,0.3]);
     scatter(sim.thresh.val, sim.estat.logxMax.alpha.tau.zero, 100, 'black');
     if strcmpi(dataset,"Y15")
-        annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',11);
-        annotation('textarrow',[.45,.4],[.775,.775],'String','\alpha = 2.04','fontsize',11);
-        %annotation('textarrow',[.52,.57],[.885,.885],'String','Y15 hypothetical threshold','fontsize',11);
-        %annotation('textarrow',[.67,.62],[.397,.397],'String','\alpha = -0.30','fontsize',11);
+        annotation('textarrow',[.45,.4],[.85,.85],'String','Y15 detection threshold','fontsize',fontSize-1);
+        annotation('textarrow',[.45,.4],[.775,.775],'String','\alpha = 2.04','fontsize',fontSize-1);
+        %annotation('textarrow',[.52,.57],[.885,.885],'String','Y15 hypothetical threshold','fontsize',fontSize-1);
+        %annotation('textarrow',[.67,.62],[.397,.397],'String','\alpha = -0.30','fontsize',fontSize-1);
         %yline(sim.estat.logxMax.alpha.tau.posOne,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
         %yline(sim.estat.logxMax.alpha.tau.negOne,"linewidth", 2, "linestyle", "--", "color", [1,0,1]);
     elseif strcmpi(dataset,"P16")
-        annotation('textarrow',[.59,.54],[.85,.85],'String','P16 detection threshold','fontsize',11);
-        annotation('textarrow',[.59,.54],[.725,.725],'String','\alpha = 2.50','fontsize',11);
+        annotation('textarrow',[.575,.525],[.84,.84],'String',{['P16 detection'], ['threshold']},'fontsize',fontSize-1,'HorizontalAlignment','center');
+        annotation('textarrow',[.575,.525],[.727,.727],'String','\alpha = 2.50','fontsize',fontSize-1);
     elseif strcmpi(dataset,"T17")
-        annotation('textarrow',[.625,.675],[.4,.4],'String','T17 detection threshold','fontsize',11);
-        annotation('textarrow',[.615,.665],[.62,.62],'String','\alpha = 1.70','fontsize',11);
+        annotation('textarrow',[.625,.675],[.4,.4],'String','T17 detection threshold','fontsize',fontSize-1);
+        annotation('textarrow',[.615,.665],[.625,.625],'String','\alpha = 1.70','fontsize',fontSize-1);
     elseif strcmpi(dataset,"L19") && ~convertEisoToLiso
-        annotation('textarrow',[.48,.53],[.4,.4],'String','L19 detection threshold','fontsize',11);
-        annotation('textarrow',[.48,.53],[.715,.715],'String','\alpha = 1.31','fontsize',11);
+        annotation('textarrow',[.48,.53],[.4,.4],'String',{['L19 detection'],['threshold']},'fontsize',fontSize-1,'HorizontalAlignment','center');
+        annotation('textarrow',[.48,.53],[.665,.665],'String','\alpha = 1.31','fontsize',fontSize-1);
     end
     if strcmpi(sim.type,"flux")
         xlabel("Detection Threshold Flux [ ergs / s / cm^2 ]", "interpreter", "tex", "fontsize", fontSize);
@@ -308,7 +308,7 @@ figure("color", figureColor); hold on; box on;
         error("Dataset must be Y15, P16, T17, or L19 for alpha (tau = 0) vs threshold");
     end
     ylabel("\alpha at Efron-Petrosian Tau Statistic \tau = 0", "interpreter", "tex", "fontsize", fontSize);
-    set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'linear', "color", figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if ~strcmpi(dataset,"L19")
             export_fig(sim.output.path + "/" + dataset + "threshAlpha.png", "-m4 -transparent");
@@ -372,8 +372,8 @@ figure("color", figureColor); hold on; box on;
         line([sim.thresh.logZoneLimits(1),4.86],[2.9e+51,2.9e+51],'color','black','linewidth',1,'linestyle','--')
         line([4.86,4.86],[2.9e+51,1.e56],'color','black','linewidth',1,'linestyle','--')
         scatter(2.77,2.9e51,75,'black')
-        text(2,1.e55,'N_{i}','fontsize',13);
-        annotation('textarrow',[.5,.453],[.45,.545],'String','point i','fontsize',12);
+        text(2,1.e55,'N_{i}','fontsize',fontSize-1);
+        annotation('textarrow',[.5,.46],[.45,.545],'String','point i','fontsize',fontSize-1);
     end
     xlim(sim.thresh.logZoneLimits);
     xlabel("z + 1", "interpreter", "tex", "fontsize", fontSize);
@@ -383,7 +383,7 @@ figure("color", figureColor); hold on; box on;
         ylabel("E_{iso} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
     end
     legend([dataset + " sample", dataset + " detection limit","Regression line slope = \alpha"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
-    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if strcmpi(sim.type,"flux")
             export_fig(sim.output.path + "/" + dataset + "zoneLiso.png", "-m4 -transparent");
@@ -421,7 +421,7 @@ figure("color", figureColor); hold on; box on;
         ylabel("E_{0} [ ergs ]", "interpreter", "tex", "fontsize", fontSize);
     end
     legend([dataset + " sample", dataset + " detection limit"], "interpreter", "tex", "location", "southeast", "fontSize", fontSize,'color',figureColor)
-    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if strcmpi(sim.type,"flux")
             export_fig(sim.output.path + "/" + dataset + "zoneLisoCorrected.png", "-m4 -transparent");
@@ -449,7 +449,7 @@ figure("color", figureColor); hold on; box on;
     end
     ylim([exp(floor(min(sim.thresh.logVal,min(sim.logPbolSbol))-0.5)),exp(ceil(max(sim.thresh.logVal,max(sim.logPbolSbol))+0.5))]);
     legend([dataset + " sample", dataset + " detection limit"], "interpreter", "tex", "location", "northeast", "fontSize", fontSize,'color',figureColor);
-    set(gca, 'xscale', 'log', 'yscale', 'log', "color", figureColor);
+    set(gca, 'xscale', 'log', 'yscale', 'log', 'color', figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if strcmpi(sim.type,"flux")
             export_fig(sim.output.path + "/" + dataset + "zonePbol.png", "-m4 -transparent");
@@ -473,7 +473,8 @@ figure("color", figureColor); hold on; box on;
         error("sim.type must be 'flux' or 'fluence'");
     end
     ylabel("Count", "interpreter", "tex", "fontSize", fontSize);
-    legend([dataset + " sample", dataset + " detection limit"], "interpreter", "tex", "fontSize", fontSize,'color',figureColor); 
+    legend([dataset + " sample", dataset + " detection limit"], "interpreter", "tex", "fontSize", fontSize-1,'color',figureColor); 
+    set(gca, 'color', figureColor, 'fontsize', fontSize-3);
     if saveNewImages
         if strcmpi(sim.type,"flux")
             export_fig(sim.output.path + "/" + dataset + "histPbol.png", "-m4 -transparent");
